@@ -1,16 +1,17 @@
 <script setup>
 import Header from "./components/header.vue";
 import Footer from "./components/footer.vue";
+import Loading from "./components/loading.vue";
 import { useFoodStore } from "./store/foodie_store";
 import { onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 
 //取得store
 const store = useFoodStore();
-const { currentUsername } = storeToRefs(store);
+const { currentUsername, isLoading } = storeToRefs(store);
 
 //storeToRefs可保持響應性
-const { hasLoadedMembers, isLoading } = storeToRefs(store);
+const { hasLoadedMembers } = storeToRefs(store);
 
 //fetch資料
 onMounted(async () => {
@@ -22,10 +23,15 @@ onMounted(async () => {
   <header>
     <Header></Header>
   </header>
+  <main class="container">
+    <div v-if="isLoading">
+      <Loading />
+    </div>
+    <div v-else>
+      <router-view></router-view>
+    </div>
+  </main>
 
-  <div class="container">
-    <router-view></router-view>
-  </div>
   <footer><Footer></Footer></footer>
 </template>
 

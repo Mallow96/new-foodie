@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
 
-const API_URL = "https://202603foodie-node-api-production.up.railway.app";
+const API_URL = "/api";
 
 //setup 語法
 export const useFoodStore = defineStore(
@@ -146,10 +146,13 @@ export const useFoodStore = defineStore(
     };
 
     const getRestaurantInfo = (id) => {
+      if (!restaurants.value || !Array.isArray(restaurants.value)) {
+        return { id: "", name: "載入中...", address: "..." };
+      }
       return (
         restaurants.value.find((r) => r.id === id) || {
           id: "",
-          name: "",
+          name: "餐廳不存在",
           address: "",
           contactPhone: "",
           rating: "",
@@ -199,7 +202,7 @@ export const useFoodStore = defineStore(
       email,
       note,
     ) => {
-      if (!name || !phone || partySize) {
+      if (!name || !phone || !partySize) {
         return false;
       }
 
@@ -258,7 +261,7 @@ export const useFoodStore = defineStore(
       }
     };
 
-    const editReservation = (
+    const editReservation = async (
       id,
       newDate,
       newPartySize,
@@ -266,15 +269,30 @@ export const useFoodStore = defineStore(
       newNote,
       newDayOfWeek,
     ) => {
-      const target = reservations.value.find((res) => res.bookingId === id);
-      if (target) {
-        target.date = newDate;
-        target.partySize = newPartySize;
-        target.time = newTime;
-        target.note = newNote;
-        target.dayOfWeek = newDayOfWeek;
-      } else {
-        console.log("修改有誤");
+      try {
+        await axios.put(`${API_URL}/reservations/${id}`, {
+          date: newDate,
+          partySize: newPartySize,
+          time: newTime,
+          note: newNote,
+          dayOfWeek: newDayOfWeek,
+        });
+
+        //本地狀態
+        const target = reservations.value.find((res) => res.bookingId === id);
+        if (target) {
+          target.date = newDate;
+          target.partySize = newPartySize;
+          target.time = newTime;
+          target.note = newNote;
+          target.dayOfWeek = newDayOfWeek;
+        }
+
+        console.log("訂位編輯成功");
+        return true;
+      } catch (error) {
+        console.error("編輯失敗", error);
+        return false;
       }
     };
 
@@ -285,7 +303,7 @@ export const useFoodStore = defineStore(
         results.value = [];
         return;
       }
-      results.value = restaurantsWithImg.value.filter((item) => {
+      results.value = restaurants.value.filter((item) => {
         const nameMatch = item.name.toLowerCase().includes(kw);
         const addressMatch = item.address.toLowerCase().includes(kw);
         const dishesMatch =

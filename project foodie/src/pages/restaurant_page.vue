@@ -15,9 +15,7 @@ const setActiveTab = (tabName) => {
 };
 
 // 假設 restaurants 中每筆物件有唯一屬性 id
-const restaurant = restStore.restaurantsWithImg.find(
-  (r) => String(r.id) === id,
-);
+const restaurant = restStore.restaurants.find((r) => String(r.id) === id);
 </script>
 
 <template>
