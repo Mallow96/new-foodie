@@ -364,7 +364,7 @@ export const useFoodStore = defineStore(
       editReservation,
     };
   },
-  { persist: true }, // 啟用持久化
+  { persist: false }, // 啟用持久化
 );
 
 // option語法
