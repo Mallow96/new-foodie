@@ -1,17 +1,17 @@
 <script setup>
 import accountAside from "../components/account_aside.vue";
 
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useFoodStore } from "../store/foodie_store";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const useStore = useFoodStore();
-const { getReservationInfo } = storeToRefs(useStore);
+const { myReservations } = storeToRefs(useStore);
 
-const hasReservation = ref();
-const reservationCount = ref(useStore.getReservationInfo.length);
+const hasReservation = computed(() => myReservations.value.length > 0);
+// const reservationCount = ref(useStore.getReservationInfo.length);
 const noDataModal = ref(null);
 const cancelModal = ref(null);
 const editModal = ref(null);
@@ -46,27 +46,26 @@ watch(
       selectedWeekDay.value = "";
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 onMounted(() => {
   noDataModal.value = new bootstrap.Modal(
-    document.getElementById("noDataModal")
+    document.getElementById("noDataModal"),
   );
 
-  if (reservationCount.value > 0) {
-    console.log("有預訂資料");
-    hasReservation.value = true;
-  } else {
+  if (!hasReservation.value) {
     console.log("無預訂資料");
-    hasReservation.value = false;
     showNoDataModal();
   }
 
   const datePicker = document.getElementById("datePicker");
-  datePicker.addEventListener("focus", () => {
-    datePicker.showPicker();
-  });
+
+  if (datePicker) {
+    datePicker.addEventListener("focus", () => {
+      datePicker.showPicker();
+    });
+  }
 });
 
 // 顯示無資料彈跳視窗
@@ -83,10 +82,12 @@ const directHome = () => {
 //取消預訂
 const onCancel = (bookingId) => {
   cancelModal.value = new bootstrap.Modal(
-    document.getElementById("cancelModal")
+    document.getElementById("cancelModal"),
   );
   cancelModal.value.show();
-  selectedReservation.value = useStore.findReservationById(bookingId);
+  selectedReservation.value = myReservations.value.find(
+    (res) => res.bookingId === bookingId,
+  );
 };
 
 const hideCancelModal = () => {
@@ -138,7 +139,7 @@ const confirmEdit = () => {
       selectedPeople.value,
       selectedTime.value,
       reserveNote.value,
-      selectedWeekDay.value
+      selectedWeekDay.value,
     );
 
     hideEditModal();
@@ -159,9 +160,10 @@ const confirmEdit = () => {
       <div v-if="!hasReservation" class="warning-text">
         <h3 class="no-reservation">查無訂位紀錄</h3>
       </div>
+
       <div
         class="reservation-card"
-        v-for="reservation in getReservationInfo"
+        v-for="reservation in myReservations"
         :key="reservation.bookingId"
       >
         <div class="reservation-img">
@@ -171,7 +173,7 @@ const confirmEdit = () => {
         <div class="reservation-content">
           <div class="reservation-info">
             <h3 class="reservation-subtitle">
-              {{ useStore.getRestaurantInfo(reservation.restaurantId).name }}
+              {{ reservation.restaurantName }}
             </h3>
             <div class="reservation-details">
               <div class="reservation-date">
@@ -180,16 +182,11 @@ const confirmEdit = () => {
                 <p>{{ reservation.partySize }} 位</p>
               </div>
               <p class="reservation-address">
-                {{
-                  useStore.getRestaurantInfo(reservation.restaurantId).address
-                }}
+                {{ reservation.address }}
               </p>
               <p class="reservation-phone">
                 <i class="fa-solid fa-phone"></i>
-                {{
-                  useStore.getRestaurantInfo(reservation.restaurantId)
-                    .contactPhone
-                }}
+                {{ reservation.restaurantPhone }}
               </p>
             </div>
           </div>

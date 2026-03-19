@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import { useFoodStore } from "../store/foodie_store"; // 引入 store
 const store = useFoodStore();
 
@@ -33,10 +34,9 @@ function scrollCards(direction) {
 //隨機生成推薦餐廳id，模擬演算法
 const randomIds = store.randomIdGenerator(12, 1001, 1300);
 
-const recommendedRestaurants = [];
-for (const id of randomIds) {
-  recommendedRestaurants.push(store.getRestaurantInfo(id));
-}
+const recommendedRestaurants = computed(() => {
+  return randomIds.map((id) => store.getRestaurantInfo(id));
+});
 </script>
 
 <template>
@@ -55,7 +55,7 @@ for (const id of randomIds) {
         <div class="card" v-for="item in recommendedRestaurants">
           <router-link :to="`/restaurant/${item.id}`">
             <div class="card-img-container">
-              <img :src="item.imageUrl" :alt="item.name" class="card-img-top" />
+              <img :src="item.image" :alt="item.name" class="card-img-top" />
               <div class="card-tag">熱門</div>
             </div>
             <div class="card-body">
@@ -65,7 +65,7 @@ for (const id of randomIds) {
                 <span class="rating-score">{{ item.rating }}</span>
                 <div
                   class="stars-outer"
-                  :style="{ '--rating': item.rating.toFixed(1) }"
+                  :style="{ '--rating': Number(item.rating || 0).toFixed(1) }"
                 >
                   ★★★★★
                   <div class="stars-inner">★★★★★</div>

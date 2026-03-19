@@ -53,10 +53,7 @@ const directUnfinish = () => {
       <div class="coupons-container" id="couponsContainer">
         <div class="coupon-card" @click="directUnfinish">
           <div class="coupon-img">
-            <img
-              src="../assets/food stock/pexels-chitokan-2087748.jpg"
-              alt="約會首選"
-            />
+            <img src="https://placehold.net/800x600.png" alt="約會首選" />
           </div>
           <div class="coupon-content">
             <div class="coupon-text">
@@ -73,10 +70,7 @@ const directUnfinish = () => {
 
         <div class="coupon-card" @click="directUnfinish">
           <div class="coupon-img">
-            <img
-              src="../assets/food stock/pexels-valeriya-11213786.jpg"
-              alt="肉食主義者集合"
-            />
+            <img src="https://placehold.net/800x600.png" alt="肉食主義者集合" />
           </div>
           <div class="coupon-content">
             <div class="coupon-text">
@@ -93,10 +87,7 @@ const directUnfinish = () => {
 
         <div class="coupon-card" @click="directUnfinish">
           <div class="coupon-img">
-            <img
-              src="../assets/food stock/pexels-h-u-mai-2153907229-32961648.jpg"
-              alt="下午茶時光"
-            />
+            <img src="https://placehold.net/800x600.png" alt="下午茶時光" />
           </div>
           <div class="coupon-content">
             <div class="coupon-text">
@@ -113,10 +104,7 @@ const directUnfinish = () => {
 
         <div class="coupon-card" @click="directUnfinish">
           <div class="coupon-img">
-            <img
-              src="../assets/food stock/pexels-robinstickel-70497.jpg"
-              alt="家庭聚餐"
-            />
+            <img src="https://placehold.net/800x600.png" alt="家庭聚餐" />
           </div>
           <div class="coupon-content">
             <div class="coupon-text">
@@ -133,10 +121,7 @@ const directUnfinish = () => {
 
         <div class="coupon-card" @click="directUnfinish">
           <div class="coupon-img">
-            <img
-              src="../assets/food stock/pexels-valeriya-1860208.jpg"
-              alt="早鳥專案"
-            />
+            <img src="https://placehold.net/800x600.png" alt="早鳥專案" />
           </div>
           <div class="coupon-content">
             <div class="coupon-text">

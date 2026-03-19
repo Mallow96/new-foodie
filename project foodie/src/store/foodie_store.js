@@ -1,21 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
-// import { useRouter } from "vue-router";
 
-// store.js 檔案頂部
-
-// ⚡️ 修正：使用 import.meta.env.BASE_URL 確保路徑指向正確的子目錄
-// 在您的環境中，BASE_URL 會是 '/foodie/'
-const BASE_PATH = import.meta.env.BASE_URL;
-
-const userJSON = `${BASE_PATH}membership_data.json`;
-const restaurantJSON = `${BASE_PATH}restaurants_data.json`;
-const reservationJSON = `${BASE_PATH}reservation_data.json`;
-
-// const userJSON = "/membership_data.json";
-// const restaurantJSON = "/restaurants_data.json";
-// const reservationJSON = "/reservation_data.json";
+const API_URL = "https://202603foodie-node-api-production.up.railway.app";
 
 //setup 語法
 export const useFoodStore = defineStore(
@@ -26,11 +13,11 @@ export const useFoodStore = defineStore(
     // const router = useRouter();
 
     const users = ref(null);
-    const loggedInUser = ref(null);
-    const currentUsername = ref("user1");
-
     const restaurants = ref(null);
     const reservations = ref(null);
+
+    const loggedInUser = ref(null);
+    const currentUsername = ref("user1");
 
     const isLoading = ref(false);
     const dataError = ref(null);
@@ -98,72 +85,46 @@ export const useFoodStore = defineStore(
       return null;
     });
 
-    const getReservationInfo = computed(() => {
-      if (!loggedInUser.value?.userId || !reservations.value) {
-        return [];
-      }
-
-      // 回傳當前登入使用者的所有訂單（含餐廳圖片）
-      return reservationsWithImg.value.filter(
-        (reservation) => reservation.userId === loggedInUser.value.userId
-      );
-    });
-
     // function() 就是 actions
     // 根據 username 設定登入使用者
-    async function fetchAllData() {
+    const fetchAllData = async () => {
       isLoading.value = true;
       dataError.value = null;
 
       try {
-        console.log(`Debug: 嘗試請求會員資料: ${userJSON}`);
-        const memberResponse = await axios.get(userJSON);
-        users.value = memberResponse.data;
-        console.log("會員資料已成功載入。");
+        console.log("開始載入資料...");
+        const [memberRes, restaurantRes, reservationRes] = await Promise.all([
+          axios.get(`${API_URL}/members`),
+          axios.get(`${API_URL}/restaurants`),
+          axios.get(`${API_URL}/reservations`),
+        ]);
 
-        console.log(`Debug: 嘗試請求餐廳資料: ${restaurantJSON}`);
-        const restaurantResponse = await axios.get(restaurantJSON);
-        restaurants.value = restaurantResponse.data;
-        console.log("✅ 餐廳資料載入成功。");
+        users.value = memberRes.data;
+        restaurants.value = restaurantRes.data;
+        // console.log("前端收到的 restaurants:", restaurants.value);
+        reservations.value = reservationRes.data;
+        console.log("所有資料載入完成");
 
-        console.log(`Debug: 嘗試請求預約資料: ${reservationJSON}`);
-        const reservationResponse = await axios.get(reservationJSON);
-        reservations.value = reservationResponse.data;
-        console.log("✅ 預約資料載入成功。");
+        //執行自動登入
+        const targetUsername = currentUsername.value || "user1";
+        const userExists = users.value.find(
+          (m) => m.username === targetUsername,
+        );
 
-        console.log("所有 JSON 資料已成功載入並分類。");
-
-        if (loggedInUser.value) {
-          const restoredUsername = loggedInUser.value.username;
-          const userExists = users.value.find(
-            (m) => m.username === restoredUsername
-          );
-
-          if (userExists) {
-            // 如果用戶存在，用新載入的物件更新 loggedInUser (避免使用舊的持久化物件)
-            loggedInUser.value = userExists;
-            console.log(
-              `✅ 已使用新載入的數據重新驗證並更新用戶 ${restoredUsername} 狀態。`
-            );
-          } else {
-            // 如果用戶在新的 JSON 數據中不存在，則清空登入狀態
-            loggedInUser.value = null;
-            console.warn(
-              `已載入數據中找不到用戶 ${restoredUsername}，狀態已清空。`
-            );
-          }
+        if (userExists) {
+          loggedInUser.value = userExists;
+          console.log(`成功登入用戶 ${targetUsername} 。`);
+        } else {
+          loggedInUser.value = null;
+          console.warn(`找不到用戶 ${targetUsername} 。`);
         }
       } catch (err) {
-        console.error("載入資料時發生錯誤或請求未成功發出:", err.message);
-        dataError.value = "無法載入部分或所有資料，請檢查檔案路徑。";
-
-        // users.value = null;
-        // restaurants.value = null;
-        // reservations.value = null;
+        console.error("載入資料時發生錯誤:", err);
+        dataError.value = "無法載入部分或所有資料。";
       } finally {
         isLoading.value = false;
       }
-    }
+    };
 
     const loginUserByUsername = (username) => {
       if (!hasLoadedMembers.value) {
@@ -184,50 +145,50 @@ export const useFoodStore = defineStore(
       }
     };
 
-    function getRestaurantInfo(id) {
+    const getRestaurantInfo = (id) => {
       return (
-        restaurantsWithImg.value.find((r) => r.id === id) || {
+        restaurants.value.find((r) => r.id === id) || {
           id: "",
           name: "",
           address: "",
           contactPhone: "",
           rating: "",
           reviewCount: "",
-          imageUrl: "",
+          image: "",
         }
       );
-    }
-
-    const restaurantsWithImg = computed(() => {
-      if (!restaurants.value) {
-        return [];
-      }
-      return restaurants.value.map((restaurant, index) => ({
-        ...restaurant,
-        imageUrl: testFoodImages.value[index % testFoodImages.value.length],
-      }));
-    });
+    };
 
     // 將 reservations 裡每筆資料，結合對應餐廳的 imageUrl
-    const reservationsWithImg = computed(() => {
-      if (!reservations.value || restaurantsWithImg.value.length === 0) {
+    const myReservations = computed(() => {
+      if (
+        !reservations.value ||
+        !restaurants.value ||
+        restaurants.value.length === 0
+      ) {
         return [];
       }
 
+      const userReservations = reservations.value.filter(
+        (resv) => resv.userId === loggedInUser.value.userId,
+      );
+
       return reservations.value.map((resv) => {
-        // 找到該筆 reservation 的餐廳物件
-        const restaurant = restaurantsWithImg.value.find(
-          (r) => r.id === resv.restaurantId
-        );
+        // 透過ID尋找餐廳物件
+        const restaurant = getRestaurantInfo(resv.restaurantId);
+
         return {
           ...resv,
           // 如果有找到，就加上 imageUrl，否則留空字串
-          restaurantImage: restaurant?.imageUrl || "",
+          restaurantName: restaurant.name || "未知餐廳",
+          restaurantAddress: restaurant.address || "無地址資訊",
+          restaurantPhone: restaurant.contactPhone || "無電話資訊",
+          restaurantImage: restaurant.image || "",
         };
       });
     });
 
-    const newReservation = (
+    const newReservation = async (
       restaurantId,
       date,
       dayOfWeek,
@@ -236,38 +197,42 @@ export const useFoodStore = defineStore(
       name,
       phone,
       email,
-      note
+      note,
     ) => {
-      if (name == null || phone == null || partySize == null) {
+      if (!name || !phone || partySize) {
         return false;
-      } else {
-        if (!reservations.value) {
-          reservations.value = []; // 如果是 null，將其初始化為空陣列
-        }
+      }
 
+      try {
         const restaurantName =
           getRestaurantInfo(restaurantId)?.name || "未知餐廳";
 
-        reservations.value.push({
-          bookingId: `B${String(reservations.value.length + 1).padStart(
-            3,
-            "0"
-          )}`,
-          userId: loggedInUser.value.userId,
-          restaurantId: restaurantId,
-          restaurantName: restaurantName,
-          date: date,
-          dayOfWeek: dayOfWeek,
-          time: time,
-          partySize: partySize,
+        const payload = {
+          userId: loggedInUser.value.userId || "guest",
+          restaurantId,
+          restaurantName,
+          date,
+          dayOfWeek,
+          time,
+          partySize,
           customerName: name,
           customerPhone: phone,
           customerEmail: email,
-          note: note,
-          createdAt: new Date().toISOString().split("T")[0],
-          status: "已預約",
-        });
-        console.log(reservations.value);
+          note,
+        };
+
+        const response = await axios.post(`${API_URL}/reservations`, payload);
+
+        if (!reservations.value) {
+          reservations.value = [];
+        }
+        reservations.value.push(response.data.reservation);
+
+        console.log("預約成功，API回傳: ", response.data);
+        return true;
+      } catch (error) {
+        console.error("預約失敗: ", error);
+        return false;
       }
     };
 
@@ -276,15 +241,21 @@ export const useFoodStore = defineStore(
       return target || null;
     };
 
-    const cancelReservation = (id) => {
-      const index = reservations.value.findIndex((res) => res.bookingId === id);
-      if (index === -1) {
-        console.error(`找不到 bookingId 為 ${id} 的預約紀錄。`);
-        return;
-      }
+    const cancelReservation = async (id) => {
+      try {
+        await axios.delete(`${API_URL}/reservations/${id}`);
 
-      reservations.value.splice(index, 1);
-      console.log(`已取消 bookingId 為 ${id} 的預約紀錄。`);
+        const index = reservations.value.findIndex(
+          (res) => res.bookingId === id,
+        );
+
+        if (index !== -1) {
+          reservations.value.splice(index, 1);
+          console.log(`已取消 bookingId 為 ${id} 的預約紀錄。`);
+        }
+      } catch (error) {
+        console.error("取消預約失敗: ", error);
+      }
     };
 
     const editReservation = (
@@ -293,7 +264,7 @@ export const useFoodStore = defineStore(
       newPartySize,
       newTime,
       newNote,
-      newDayOfWeek
+      newDayOfWeek,
     ) => {
       const target = reservations.value.find((res) => res.bookingId === id);
       if (target) {
@@ -335,7 +306,7 @@ export const useFoodStore = defineStore(
         console.error(
           `錯誤：範圍 (共 ${
             maxNum - minNum + 1
-          } 個) 太小，無法生成 ${count} 個唯一 ID。`
+          } 個) 太小，無法生成 ${count} 個唯一 ID。`,
         );
         return [];
       }
@@ -377,11 +348,9 @@ export const useFoodStore = defineStore(
       isLoading,
       dataError,
       hasLoadedMembers,
-      getReservationInfo,
       results,
       testFoodImages,
-      restaurantsWithImg,
-      reservationsWithImg,
+      myReservations,
       fetchAllData,
       loginUserByUsername,
       newReservation,
@@ -395,7 +364,7 @@ export const useFoodStore = defineStore(
       editReservation,
     };
   },
-  { persist: true } // 啟用持久化
+  { persist: true }, // 啟用持久化
 );
 
 // option語法

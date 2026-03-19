@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 import { useFoodStore } from "../store/foodie_store"; // 引入 store
 const store = useFoodStore();
 
@@ -35,20 +36,17 @@ function scrollRanking(id, direction) {
 const randomIds = store.randomIdGenerator(10, 1001, 1300);
 const randomIds2 = store.randomIdGenerator(10, 1001, 1300);
 const randomIds3 = store.randomIdGenerator(10, 1001, 1300);
+console.log(randomIds, randomIds2, randomIds3);
 
-const restaurantsRanking1 = [];
-const restaurantsRanking2 = [];
-const restaurantsRanking3 = [];
-
-for (const id of randomIds) {
-  restaurantsRanking1.push(store.getRestaurantInfo(id));
-}
-for (const id of randomIds2) {
-  restaurantsRanking2.push(store.getRestaurantInfo(id));
-}
-for (const id of randomIds3) {
-  restaurantsRanking3.push(store.getRestaurantInfo(id));
-}
+const restaurantsRanking1 = computed(() => {
+  return randomIds.map((id) => store.getRestaurantInfo(id));
+});
+const restaurantsRanking2 = computed(() => {
+  return randomIds2.map((id) => store.getRestaurantInfo(id));
+});
+const restaurantsRanking3 = computed(() => {
+  return randomIds3.map((id) => store.getRestaurantInfo(id));
+});
 </script>
 
 <template>
@@ -70,11 +68,7 @@ for (const id of randomIds3) {
           <div class="card" v-for="(item, index) in restaurantsRanking1">
             <router-link :to="`/restaurant/${item.id}`">
               <div class="card-img-container">
-                <img
-                  :src="item.imageUrl"
-                  :alt="item.name"
-                  class="card-img-top"
-                />
+                <img :src="item.image" :alt="item.name" class="card-img-top" />
                 <div class="card-tag">{{ index + 1 }}</div>
               </div>
               <div class="card-body">
@@ -117,11 +111,7 @@ for (const id of randomIds3) {
           <div class="card" v-for="(item, index) in restaurantsRanking2">
             <router-link :to="`/restaurant/${item.id}`">
               <div class="card-img-container">
-                <img
-                  :src="item.imageUrl"
-                  :alt="item.name"
-                  class="card-img-top"
-                />
+                <img :src="item.image" :alt="item.name" class="card-img-top" />
                 <div class="card-tag">{{ index + 1 }}</div>
               </div>
               <div class="card-body">
@@ -164,11 +154,7 @@ for (const id of randomIds3) {
           <div class="card" v-for="(item, index) in restaurantsRanking3">
             <router-link :to="`/restaurant/${item.id}`">
               <div class="card-img-container">
-                <img
-                  :src="item.imageUrl"
-                  :alt="item.name"
-                  class="card-img-top"
-                />
+                <img :src="item.image" :alt="item.name" class="card-img-top" />
                 <div class="card-tag">{{ index + 1 }}</div>
               </div>
               <div class="card-body">
