@@ -13,36 +13,9 @@ const { currentUsername } = storeToRefs(store);
 const { hasLoadedMembers, isLoading } = storeToRefs(store);
 
 //fetch資料
-onMounted(() => {
-  if (!hasLoadedMembers.value) {
-    console.log("App Mounted: 所有資料載入");
-    store.fetchAllData();
-  }
+onMounted(async () => {
+  await store.fetchAllData();
 });
-
-//監聽資料載入狀態
-watch(
-  isLoading,
-  (newisLoading) => {
-    //條件
-    if (newisLoading === false && hasLoadedMembers.value) {
-      console.log("資料載入完成");
-
-      //載入完成，執行loginUser
-      const loadSuccess = store.loginUserByUsername(currentUsername.value);
-
-      if (loadSuccess) {
-        console.log(`${currentUsername.value} 登入狀態成功`);
-      } else {
-        console.log("設定登入失敗");
-      }
-    } else if (newisLoading === false && store.dataError) {
-      //有載入，但發生錯誤
-      console.error("資料載入失敗，錯誤訊息: ", store.dataError);
-    }
-  },
-  { immediate: true }
-);
 </script>
 
 <template>
