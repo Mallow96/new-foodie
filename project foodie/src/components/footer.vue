@@ -89,6 +89,10 @@ const store = useFoodStore();
 .footer {
   background-color: var(--color-primary-beige);
   color: var(--color-primary-brown);
+  height: var(--footer-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {

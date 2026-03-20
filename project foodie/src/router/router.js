@@ -7,6 +7,7 @@ import AccountSetting from "../pages/account_setting.vue";
 import ReservationHistory from "../pages/reservation_history.vue";
 import SearchResult from "../pages/search_result.vue";
 import PageUnfinish from "../pages/page_unfinish.vue";
+import Map from "../pages/search_map.vue";
 
 const routes = [
   { path: "/", name: "test", component: Test },
@@ -29,6 +30,7 @@ const routes = [
     name: "developing",
     component: PageUnfinish,
   },
+  { path: "/map", name: "map", component: Map },
 ];
 
 const router = createRouter({
@@ -41,7 +43,8 @@ const router = createRouter({
     } else {
       // 否則回到頁面頂部
       return { top: 0 };
-    }}
+    }
+  },
 });
 
 export default router;

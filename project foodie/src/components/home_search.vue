@@ -149,10 +149,7 @@ watch(isExpanded, async (newVal) => {
       <!-- 搜尋鈕 -->
 
       <!-- 地圖鈕 -->
-      <router-link
-        :to="{ name: 'developing' }"
-        class="map-block search-bar-blocks unfinished"
-      >
+      <router-link :to="{ name: 'map' }" class="map-block search-bar-blocks">
         <span>前往地圖</span>
         <i class="fa-solid fa-arrow-right"></i>
       </router-link>

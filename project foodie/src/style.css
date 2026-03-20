@@ -35,6 +35,8 @@
 
   --container-width: 1200px;
   --bellow-header: 5.25rem;
+  --header-height: 5.25rem;
+  --footer-height: 14rem;
 
   --border-radius: 0.9375rem;
   --home-section-gap: 12rem;
@@ -81,7 +83,7 @@ h1 {
 
 .container {
   width: 75%;
-  margin: var(--bellow-header) 0;
+  margin-top: var(--bellow-header);
   max-width: 1200px;
   /* height: 100vh; */
   padding: 0;
@@ -155,11 +157,9 @@ textarea:focus {
   top: calc(var(--bellow-header) + 8px);
 }
 
-.unfinished{
-cursor: not-allowed !important
+.unfinished {
+  cursor: not-allowed !important;
 }
-
-
 
 @media (prefers-color-scheme: light) {
   :root {

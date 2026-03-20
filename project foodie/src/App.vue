@@ -21,7 +21,7 @@ onMounted(async () => {
 
 <template>
   <header>
-    <Header></Header>
+    <Header />
   </header>
   <main class="container">
     <div v-if="isLoading">
@@ -32,7 +32,9 @@ onMounted(async () => {
     </div>
   </main>
 
-  <footer><Footer></Footer></footer>
+  <footer>
+    <Footer />
+  </footer>
 </template>
 
 <style scoped>
@@ -55,5 +57,9 @@ footer {
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   margin: 0;
   padding: 0;
+}
+
+main {
+  min-height: calc(100vh - var(--footer-height) - var(--header-height));
 }
 </style>
