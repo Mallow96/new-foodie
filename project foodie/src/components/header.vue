@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <header class="header">
+  <div class="header">
     <div class="logo">
       <a href="">
         <img src="../assets/logo.svg" alt="logo" class="logo-img" />
@@ -20,7 +20,7 @@
         </router-link>
       </div>
     </div>
-  </header>
+  </div>
 </template>
 
 <style scoped>

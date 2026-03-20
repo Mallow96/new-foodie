@@ -10,27 +10,60 @@ import PageUnfinish from "../pages/page_unfinish.vue";
 import Map from "../pages/search_map.vue";
 
 const routes = [
-  { path: "/", name: "test", component: Test },
-  { path: "/myaccount", name: "account", component: Account },
-  { path: "/fakelist", name: "fakelist", component: RestaurantList },
-  { path: "/restaurant/:id", component: RestaurantPage, props: true }, // 動態路由
+  {
+    path: "/",
+    name: "test",
+    component: Test,
+    meta: { hideHeader: false, hideFooter: false },
+  },
+  {
+    path: "/myaccount",
+    name: "account",
+    component: Account,
+    meta: { hideHeader: false, hideFooter: false },
+  },
+  {
+    path: "/fakelist",
+    name: "fakelist",
+    component: RestaurantList,
+    meta: { hideHeader: false, hideFooter: false },
+  },
+  {
+    path: "/restaurant/:id",
+    component: RestaurantPage,
+    props: true,
+    meta: { hideHeader: false, hideFooter: false },
+  }, // 動態路由
   {
     path: "/account-setting",
     name: "accountSetting",
     component: AccountSetting,
+    meta: { hideHeader: false, hideFooter: false },
   },
   {
     path: "/reservation-history",
     name: "reservationHistory",
     component: ReservationHistory,
+    meta: { hideHeader: false, hideFooter: false },
   },
-  { path: "/search-result", name: "searchResult", component: SearchResult },
+  {
+    path: "/search-result",
+    name: "searchResult",
+    component: SearchResult,
+    meta: { hideHeader: false, hideFooter: false },
+  },
   {
     path: "/this-page-is-developing",
     name: "developing",
     component: PageUnfinish,
+    meta: { hideHeader: false, hideFooter: false },
   },
-  { path: "/map", name: "map", component: Map },
+  {
+    path: "/map",
+    name: "map",
+    component: Map,
+    meta: { hideHeader: false, hideFooter: true },
+  },
 ];
 
 const router = createRouter({

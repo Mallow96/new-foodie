@@ -21,19 +21,19 @@ onMounted(async () => {
 
 <template>
   <header>
-    <Header />
+    <Header v-if="!$route.meta.hideHeader" />
   </header>
-  <main class="container">
+  <div class="container">
     <div v-if="isLoading">
       <Loading />
     </div>
     <div v-else>
       <router-view></router-view>
     </div>
-  </main>
+  </div>
 
   <footer>
-    <Footer />
+    <Footer v-if="!$route.meta.hideFooter" />
   </footer>
 </template>
 
@@ -59,7 +59,11 @@ footer {
   padding: 0;
 }
 
-main {
+.container {
   min-height: calc(100vh - var(--footer-height) - var(--header-height));
+}
+
+.container > * {
+  height: 100%;
 }
 </style>
