@@ -22,19 +22,19 @@ import Map_Aside from "../components/map_aside.vue";
 
 .content > * {
   height: 100%;
-  padding-top: var(--header-height);
 }
 
 .main {
   width: 100%;
   position: relative;
-
-  background-color: rgb(170, 170, 170);
+  z-index: 5;
+  /* background-color: rgb(170, 170, 170); */
 }
 
 .aside {
   position: absolute;
   z-index: 10;
   background-color: rgba(81, 81, 81, 0.2);
+  padding-top: var(--header-height);
 }
 </style>
