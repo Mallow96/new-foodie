@@ -4,6 +4,7 @@ import App from "./App.vue";
 import router from "./router/router";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import "leaflet/dist/leaflet.css";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
