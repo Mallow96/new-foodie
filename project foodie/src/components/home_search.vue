@@ -149,7 +149,10 @@ watch(isExpanded, async (newVal) => {
       <!-- 搜尋鈕 -->
 
       <!-- 地圖鈕 -->
-      <router-link :to="{ name: 'map' }" class="map-block search-bar-blocks">
+      <router-link
+        :to="{ name: 'map' }"
+        class="map-block search-bar-blocks clickables"
+      >
         <span>前往地圖</span>
         <i class="fa-solid fa-arrow-right"></i>
       </router-link>
@@ -208,6 +211,7 @@ section {
 .search-input {
   outline: none;
   border: none;
+  width: 100%;
 }
 
 .visible-content {
@@ -243,9 +247,14 @@ button {
   border-radius: 30px !important;
   font-size: 1.25rem;
   &:hover {
-    background-color: var(--color-primary-yellow);
+    /* background-color: var(--color-primary-yellow); */
     color: var(--color-primary-dbrown);
   }
+}
+
+.button-default {
+  background-color: var(--color-primary-brown);
+  color: white;
 }
 
 @-webkit-keyframes slide-in-fwd-center {

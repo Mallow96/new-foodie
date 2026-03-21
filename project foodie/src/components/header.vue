@@ -1,12 +1,10 @@
-<script setup></script>
+<script setup>
+import Btn_Logo from "./btn_logo.vue";
+</script>
 
 <template>
   <div class="header">
-    <div class="logo">
-      <a href="/">
-        <img src="../assets/logo.svg" alt="logo" class="logo-img" />
-      </a>
-    </div>
+    <Btn_Logo />
 
     <div class="nav-group">
       <div class="icons">
@@ -31,15 +29,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-}
-
-.logo {
-  place-items: center;
-}
-
-.logo-img {
-  width: 8.75rem;
-  height: auto;
 }
 
 .icons {

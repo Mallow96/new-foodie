@@ -51,7 +51,7 @@ const directUnfinish = () => {
       </button>
 
       <div class="coupons-container" id="couponsContainer">
-        <div class="coupon-card" @click="directUnfinish">
+        <div class="coupon-card clickables" @click="directUnfinish">
           <div class="coupon-img">
             <img src="https://placehold.net/800x600.png" alt="約會首選" />
           </div>
@@ -68,7 +68,7 @@ const directUnfinish = () => {
           </div>
         </div>
 
-        <div class="coupon-card" @click="directUnfinish">
+        <div class="coupon-card clickables" @click="directUnfinish">
           <div class="coupon-img">
             <img src="https://placehold.net/800x600.png" alt="肉食主義者集合" />
           </div>
@@ -85,7 +85,7 @@ const directUnfinish = () => {
           </div>
         </div>
 
-        <div class="coupon-card" @click="directUnfinish">
+        <div class="coupon-card clickables" @click="directUnfinish">
           <div class="coupon-img">
             <img src="https://placehold.net/800x600.png" alt="下午茶時光" />
           </div>
@@ -102,7 +102,7 @@ const directUnfinish = () => {
           </div>
         </div>
 
-        <div class="coupon-card" @click="directUnfinish">
+        <div class="coupon-card clickables" @click="directUnfinish">
           <div class="coupon-img">
             <img src="https://placehold.net/800x600.png" alt="家庭聚餐" />
           </div>
@@ -119,7 +119,7 @@ const directUnfinish = () => {
           </div>
         </div>
 
-        <div class="coupon-card" @click="directUnfinish">
+        <div class="coupon-card clickables" @click="directUnfinish">
           <div class="coupon-img">
             <img src="https://placehold.net/800x600.png" alt="早鳥專案" />
           </div>

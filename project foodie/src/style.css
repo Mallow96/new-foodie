@@ -19,6 +19,7 @@
 
   --color-beige-50: #fbf8f3;
   --color-beige-200: #f7f3e8;
+  --color-beige-300: #f5efe1;
 
   --color-brown-50: #e2d7cf;
   --color-brown-200: #c8b4a6;
@@ -121,11 +122,6 @@ textarea {
   border-color: #646cff;
 } */
 
-/* button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-} */
-
 #app {
   display: flex;
   flex-direction: column;
@@ -133,9 +129,23 @@ button:focus-visible {
   position: relative;
 }
 
-.button-default {
-  background-color: var(--color-primary-brown);
-  color: white;
+button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+button:hover,
+.clickables:hover,
+.card:hover {
+  transform: translateY(-1px);
+  transition: all 0.3s ease;
+}
+button:active,
+.clickables:active {
+  transform: translateY(0);
+  transition: all 0.1s ease;
+  scale: 97%;
 }
 
 .row {

@@ -20,7 +20,16 @@ import Map_Aside from "../components/map_aside.vue";
   width: 100vw;
 }
 
-.content > * {
+.btn-logo {
+  position: absolute;
+  z-index: 11;
+  top: 1rem;
+
+  left: calc((100vw - 8.75rem) / 2);
+}
+
+.aside,
+.main {
   height: 100%;
 }
 

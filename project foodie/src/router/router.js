@@ -66,7 +66,7 @@ const routes = [
     path: "/map",
     name: "map",
     component: Map,
-    meta: { hideHeader: false, hideFooter: true },
+    meta: { hideHeader: true, hideFooter: true },
   },
 ];
 
