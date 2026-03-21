@@ -41,27 +41,27 @@ const formatDateTime = (isoString) => {
     <div class="divider w-100"></div>
 
     <ul class="button-list">
-      <li>
+      <li class="tabs">
         <router-link :to="{ name: 'accountSetting' }">
           <i class="fa-solid fa-gear btn-icon"></i>帳號管理
         </router-link>
       </li>
-      <li>
+      <li class="tabs">
         <router-link :to="{ name: 'developing' }" class="unfinished">
           <i class="fa-regular fa-circle-user btn-icon"></i>我的主頁
         </router-link>
       </li>
-      <li>
+      <li class="tabs">
         <router-link :to="{ name: 'developing' }" class="unfinished">
           <i class="fa-regular fa-heart btn-icon"></i>收藏清單
         </router-link>
       </li>
-      <li>
+      <li class="tabs">
         <router-link :to="{ name: 'developing' }" class="unfinished">
           <i class="fa-solid fa-ticket btn-icon"></i>優惠管理
         </router-link>
       </li>
-      <li>
+      <li class="tabs">
         <router-link :to="{ name: 'reservationHistory' }">
           <i class="fa-solid fa-clock-rotate-left btn-icon"></i>訂位紀錄
         </router-link>
@@ -138,5 +138,15 @@ h2 {
 
 .button-list > li i {
   margin-right: 1rem;
+}
+
+.tabs:hover {
+  transform: translateY(-1px);
+  transition: all 0.3s ease;
+}
+
+.tabs:active {
+  transform: translateY(0);
+  transition: all 0.1s ease;
 }
 </style>

@@ -8,11 +8,11 @@ import Btn_Logo from "./btn_logo.vue";
 
     <div class="nav-group">
       <div class="icons">
-        <router-link :to="{ name: 'developing' }" class="unfinished">
+        <router-link :to="{ name: 'developing' }" class="unfinished clickables">
           <i class="fa-solid fa-bell"></i>
         </router-link>
 
-        <router-link :to="{ name: 'account' }">
+        <router-link :to="{ name: 'account' }" class="clickables">
           <i class="fa-solid fa-user"></i>
         </router-link>
       </div>

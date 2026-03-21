@@ -37,27 +37,27 @@ const userInfo = computed(() => useStore.getLoggedInUserBasicInfo);
     <div class="divider"></div>
 
     <ul class="button-list">
-      <li>
+      <li class="clickables">
         <router-link :to="{ name: 'accountSetting' }">
           <i class="fa-solid fa-gear btn-icon"></i>帳號管理
         </router-link>
       </li>
-      <li>
+      <li class="clickables">
         <router-link :to="{ name: 'accountSetting' }">
           <i class="fa-regular fa-circle-user btn-icon"></i>我的主頁
         </router-link>
       </li>
-      <li>
+      <li class="clickables">
         <router-link :to="{ name: 'accountSetting' }">
           <i class="fa-regular fa-heart btn-icon"></i>收藏清單
         </router-link>
       </li>
-      <li>
+      <li class="clickables">
         <router-link :to="{ name: 'accountSetting' }">
           <i class="fa-solid fa-ticket btn-icon"></i>優惠管理
         </router-link>
       </li>
-      <li>
+      <li class="clickables">
         <router-link :to="{ name: 'reservationHistory' }">
           <i class="fa-solid fa-clock-rotate-left btn-icon"></i>訂位紀錄
         </router-link>
