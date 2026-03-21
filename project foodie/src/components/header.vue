@@ -3,9 +3,8 @@
 <template>
   <div class="header">
     <div class="logo">
-      <a href="">
+      <a href="/">
         <img src="../assets/logo.svg" alt="logo" class="logo-img" />
-        <!-- <h2>thisisLogo</h2> -->
       </a>
     </div>
 

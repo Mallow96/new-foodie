@@ -79,6 +79,7 @@ h2 {
   padding: 2rem;
   border-radius: var(--border-radius);
   border: 1px solid var(--color-brown-200);
+  margin-bottom: 3rem;
 }
 
 .divider {

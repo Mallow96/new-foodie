@@ -43,6 +43,7 @@ onMounted(async () => {
 <style scoped>
 .content-view {
   width: 100%;
+  z-index: 100;
 }
 
 header {
@@ -52,14 +53,12 @@ header {
   width: 100%;
   margin: 0;
   padding: 0;
-  z-index: 100;
 }
 
 footer {
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 100;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   margin: 0;
   padding: 0;
