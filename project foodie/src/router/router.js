@@ -1,4 +1,8 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from "vue-router";
 import Test from "../pages/home.vue";
 import Account from "../pages/account.vue";
 import RestaurantList from "../pages/fake_list.vue";
@@ -68,7 +72,7 @@ const routes = [
 
 const router = createRouter({
   routes,
-  history: createWebHashHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       // 瀏覽器前進/後退，回復到上次的滾動位置

@@ -20,24 +20,31 @@ onMounted(async () => {
 </script>
 
 <template>
-  <header>
-    <Header v-if="!$route.meta.hideHeader" />
-  </header>
-  <div class="container">
-    <div v-if="isLoading">
-      <Loading />
-    </div>
-    <div v-else>
-      <router-view></router-view>
-    </div>
+  <div v-if="isLoading">
+    <Loading />
   </div>
 
-  <footer>
-    <Footer v-if="!$route.meta.hideFooter" />
-  </footer>
+  <div class="content-view" v-else>
+    <header>
+      <Header v-if="!$route.meta.hideHeader" />
+    </header>
+    <div class="container">
+      <div>
+        <router-view></router-view>
+      </div>
+    </div>
+
+    <footer>
+      <Footer v-if="!$route.meta.hideFooter" />
+    </footer>
+  </div>
 </template>
 
 <style scoped>
+.content-view {
+  width: 100%;
+}
+
 header {
   position: fixed;
   top: 0;
@@ -45,7 +52,6 @@ header {
   width: 100%;
   margin: 0;
   padding: 0;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   z-index: 100;
 }
 
