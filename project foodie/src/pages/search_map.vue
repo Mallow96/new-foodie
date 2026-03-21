@@ -28,13 +28,10 @@ import Map_Aside from "../components/map_aside.vue";
   width: 100%;
   position: relative;
   z-index: 5;
-  /* background-color: rgb(170, 170, 170); */
 }
 
 .aside {
   position: absolute;
   z-index: 10;
-  background-color: rgba(81, 81, 81, 0.2);
-  padding-top: var(--header-height);
 }
 </style>
