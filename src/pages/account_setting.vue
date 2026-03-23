@@ -46,24 +46,26 @@ onMounted(() => {
       <div class="tabs">
         <router-link
           to="/account-setting/account"
-          class="tab"
+          class="tab account-tab"
           :class="{ active: $route.meta.tab === 'account' }"
           >帳號設定</router-link
         >
         <router-link
           to="/account-setting/privacy"
-          class="tab"
+          class="tab privacy-tab"
           :class="{ active: $route.meta.tab === 'privacy' }"
           >隱私設定</router-link
         >
         <router-link
           to="/account-setting/notifications"
-          class="tab"
+          class="tab notifications-tab"
           :class="{ active: $route.meta.tab === 'notifications' }"
           >通知設定</router-link
         >
       </div>
-      <router-view></router-view>
+      <div class="settings-content">
+        <router-view></router-view>
+      </div>
     </main>
   </div>
 </template>
@@ -72,5 +74,50 @@ onMounted(() => {
 main {
   min-height: 70vh;
   padding: 0 1rem;
+}
+
+.tabs {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+
+  box-sizing: border-box; /* This is the key property */
+}
+
+.tab,
+.settings-content {
+  color: var(--color-primary-dbrown);
+  border: 2px solid var(--color-brown-200);
+}
+
+.tab {
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+  background-color: var(--color-brown-100);
+
+  margin-right: -2px;
+
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+
+  flex: 1;
+
+  display: inline-block;
+  text-align: center;
+}
+
+.tab:last-child {
+  margin-right: 0;
+}
+
+.active {
+  background-color: var(--color-beige-100);
+  border-bottom: 0;
+  margin-bottom: -2px;
+}
+
+.settings-content {
+  padding: 1rem;
+  border-top: 0;
 }
 </style>
