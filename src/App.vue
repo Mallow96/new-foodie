@@ -26,7 +26,7 @@ onMounted(async () => {
 
   <div class="content-view" v-else>
     <header>
-      <Header v-if="!$route.meta.hideHeader" />
+      <Header v-if="!$route.meta.hideHeader"></Header>
     </header>
     <div class="container">
       <div>
@@ -35,7 +35,7 @@ onMounted(async () => {
     </div>
 
     <footer>
-      <Footer v-if="!$route.meta.hideFooter" />
+      <Footer v-if="!$route.meta.hideFooter"></Footer>
     </footer>
   </div>
 </template>
@@ -43,7 +43,6 @@ onMounted(async () => {
 <style scoped>
 .content-view {
   width: 100%;
-  z-index: 100;
 }
 
 header {
@@ -53,7 +52,7 @@ header {
   width: 100%;
   margin: 0;
   padding: 0;
-  z-index: 101;
+  z-index: 1;
 }
 
 footer {
@@ -62,6 +61,8 @@ footer {
   width: 100%;
   margin: 0;
   padding: 0;
+  z-index: 100;
+  position: relative;
 }
 
 .container {

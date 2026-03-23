@@ -147,6 +147,8 @@ const confirmEdit = () => {
     alert("請檢查：日期、人數、時間皆為必填！");
   }
 };
+
+// 用 JS 強制把遮罩掛在 body 下
 </script>
 
 <template>

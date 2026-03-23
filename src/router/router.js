@@ -8,6 +8,9 @@ import Account from "../pages/account.vue";
 import RestaurantList from "../pages/fake_list.vue";
 import RestaurantPage from "../pages/restaurant_page.vue";
 import AccountSetting from "../pages/account_setting.vue";
+import SettingsAccount from "../components/settings_account.vue";
+import SettingsNotifications from "../components/settings_notifications.vue";
+import SettingsPrivacy from "../components/settings_privacy.vue";
 import ReservationHistory from "../pages/reservation_history.vue";
 import SearchResult from "../pages/search_result.vue";
 import PageUnfinish from "../pages/page_unfinish.vue";
@@ -43,6 +46,27 @@ const routes = [
     name: "accountSetting",
     component: AccountSetting,
     meta: { hideHeader: false, hideFooter: false },
+    children: [
+      { path: "", redirect: { name: "SettingsAccount" } }, // 預設帳號設定
+      {
+        path: "account",
+        component: SettingsAccount,
+        name: "SettingsAccount",
+        meta: { tab: "account" },
+      },
+      {
+        path: "privacy",
+        component: SettingsPrivacy,
+        name: "SettingsPrivacy",
+        meta: { tab: "privacy" },
+      },
+      {
+        path: "notifications",
+        component: SettingsNotifications,
+        name: "SettingsNotifications",
+        meta: { tab: "notifications" },
+      },
+    ],
   },
   {
     path: "/reservation-history",
