@@ -119,5 +119,12 @@ main {
 .settings-content {
   padding: 1rem;
   border-top: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 </style>
