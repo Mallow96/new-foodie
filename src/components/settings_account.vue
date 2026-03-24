@@ -78,7 +78,7 @@ p {
 section {
   border: 2px solid var(--color-brown-200);
   background-color: white;
-  padding: 1rem;
+  padding: 1rem 2rem;
   border-radius: 1rem;
 
   display: flex;
@@ -109,9 +109,9 @@ section {
   align-items: center;
 }
 
-.btn-mr {
+/* .btn-mr {
   margin-right: 2rem;
-}
+} */
 
 .edit-btn button {
   background-color: var(--color-yellow-400);

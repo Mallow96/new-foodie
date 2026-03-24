@@ -125,6 +125,7 @@ main {
 .settings-content {
   padding: 1rem;
   border-top: 0;
+  min-height: 30rem;
 
   display: flex;
   flex-direction: column;

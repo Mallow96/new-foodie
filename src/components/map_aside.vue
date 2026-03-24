@@ -8,12 +8,6 @@ const iconSwitch = ref(null);
 
 const toggleAside = () => {
   isExpanded.value = !isExpanded.value;
-
-  if (isExpanded === true) {
-    iconSwitch.value = "fa-caret-left";
-  } else {
-    iconSwitch.value = "fa-caret-right";
-  }
 };
 </script>
 
