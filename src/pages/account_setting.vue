@@ -36,9 +36,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="back"><BackBtn></BackBtn></div>
+  <div class="back">
+    <BackBtn></BackBtn>
+  </div>
 
-  <div class="row">
+  <div class="row settings-page">
     <aside class="col-3">
       <accountAside></accountAside>
     </aside>
@@ -74,6 +76,10 @@ onMounted(() => {
 main {
   min-height: 70vh;
   padding: 0 1rem;
+}
+
+.settings-page {
+  margin-bottom: 3rem;
 }
 
 .tabs {

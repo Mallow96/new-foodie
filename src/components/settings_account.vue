@@ -44,6 +44,29 @@ const userInfo = computed(() => useStore.getLoggedInUserBasicInfo);
       <button class="edit-btn-sm">修改密碼</button>
     </div>
   </section>
+
+  <section class="link-accounts">
+    <div class="link-block">
+      <div class="link-left">
+        <i class="fa-brands fa-facebook"></i>
+        <h5>Facebook</h5>
+        <p>未綁定</p>
+      </div>
+      <div class="link-right btn-mr">
+        <button class="edit-btn-sm">綁定</button>
+      </div>
+    </div>
+    <div class="link-block">
+      <div class="link-left">
+        <i class="fa-brands fa-google"></i>
+        <h5>Google</h5>
+        <p>已綁定</p>
+      </div>
+      <div class="link-right btn-mr">
+        <button class="edit-btn-sm">解除綁定</button>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -129,5 +152,22 @@ section {
   border-radius: 10rem;
 
   padding: 0.5rem 1rem;
+}
+
+.link-accounts {
+  display: flex;
+  flex-direction: column;
+}
+
+.link-block {
+  display: flex;
+}
+
+.link-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
 }
 </style>
