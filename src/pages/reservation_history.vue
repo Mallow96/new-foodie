@@ -431,6 +431,7 @@ const confirmEdit = () => {
                   class="date-input"
                   v-model="selectedDate"
                   id="datePicker"
+                  :min="today.add(3, 'day').format('YYYY-MM-DD')"
                 />
               </div>
               <!-- 日期按鈕 -->
