@@ -74,7 +74,7 @@ onMounted(() => {
 
 <style scoped>
 main {
-  min-height: 70vh;
+  height: 43rem;
   padding: 0 1rem;
 }
 
@@ -86,6 +86,7 @@ main {
   display: flex;
   justify-items: center;
   align-items: center;
+  height: 3.5rem;
 
   box-sizing: border-box; /* This is the key property */
 }
@@ -125,7 +126,7 @@ main {
 .settings-content {
   padding: 1rem;
   border-top: 0;
-  min-height: 30rem;
+  height: calc(100% - 3.5rem);
 
   display: flex;
   flex-direction: column;

@@ -2,11 +2,42 @@
 import { ref, computed } from "vue";
 
 const isTextExpanded = ref(true);
-const textIconSwitch = ref(null);
-const isTextAllOn = ref(true);
+const isEmailExpanded = ref(true);
+
+const isTextResvOn = ref(true);
+const isTextPromoOn = ref(true);
+const isTextNewsletterOn = ref(true);
+const isTextAllOn = computed({
+  get: () =>
+    isTextResvOn.value && isTextPromoOn.value && isTextNewsletterOn.value,
+
+  set: (newValue) => {
+    isTextResvOn.value = newValue;
+    isTextPromoOn.value = newValue;
+    isTextNewsletterOn.value = newValue;
+  },
+});
+
+const isEmailResvOn = ref(true);
+const isEmailPromoOn = ref(true);
+const isEmailNewsletterOn = ref(true);
+const isEmailAllOn = computed({
+  get: () =>
+    isEmailResvOn.value && isEmailPromoOn.value && isEmailNewsletterOn.value,
+
+  set: (newValue) => {
+    isEmailResvOn.value = newValue;
+    isEmailPromoOn.value = newValue;
+    isEmailNewsletterOn.value = newValue;
+  },
+});
 
 const toggleTextExpand = () => {
   isTextExpanded.value = !isTextExpanded.value;
+};
+
+const toggleEmailExpand = () => {
+  isEmailExpanded.value = !isEmailExpanded.value;
 };
 </script>
 
@@ -21,32 +52,103 @@ const toggleTextExpand = () => {
       ></i>
     </div>
 
-    <div class="text-items" :class="{ 'text-items-toggle': !isTextExpanded }">
-      <div class="text-content" :class="{ 'content-toggle': !isTextExpanded }">
-        <p>開啟全部</p>
-        <label class="custom-switch">
-          <input type="checkbox" v-model="isProfilePublic" />
-          <span class="slider"></span>
-        </label>
+    <div class="expand-wrapper" :class="{ 'is-expanded': isTextExpanded }">
+      <div class="text-items">
+        <div class="text-content">
+          <div class="switch-group switch-profile">
+            <p>開啟全部</p>
+            <label class="custom-switch">
+              <input type="checkbox" v-model="isTextAllOn" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="switch-group switch-reserve">
+            <p>開啟預訂相關通知</p>
+            <label class="custom-switch">
+              <input type="checkbox" v-model="isTextResvOn" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="switch-group switch-promo">
+            <p>開啟優惠通知</p>
+            <label class="custom-switch">
+              <input type="checkbox" v-model="isTextPromoOn" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="switch-group switch-newsletter">
+            <p>開啟電子報</p>
+            <label class="custom-switch">
+              <input type="checkbox" v-model="isTextNewsletterOn" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="email-notifications">
+    <div class="section-head" @click="toggleEmailExpand()">
+      <h5>電子郵件通知</h5>
+      <i
+        :class="
+          isTextExpanded ? 'fa-solid fa-angle-up' : 'fa-solid fa-angle-down'
+        "
+      ></i>
+    </div>
+
+    <div class="expand-wrapper" :class="{ 'is-expanded': isEmailExpanded }">
+      <div class="text-items">
+        <div class="text-content">
+          <div class="switch-group switch-profile">
+            <p>開啟全部</p>
+            <label class="custom-switch">
+              <input type="checkbox" v-model="isEmailAllOn" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="switch-group switch-reserve">
+            <p>開啟預訂相關通知</p>
+            <label class="custom-switch">
+              <input type="checkbox" v-model="isEmailResvOn" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="switch-group switch-promo">
+            <p>開啟優惠通知</p>
+            <label class="custom-switch">
+              <input type="checkbox" v-model="isEmailPromoOn" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="switch-group switch-newsletter">
+            <p>開啟電子報</p>
+            <label class="custom-switch">
+              <input type="checkbox" v-model="isEmailNewsletterOn" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-h5 {
+h5,
+p {
   margin: 0;
 }
 
 section {
   border: 2px solid var(--color-brown-200);
   background-color: white;
-  padding: 1rem;
+  /* padding: 1rem; */
   border-radius: 1rem;
 
   display: flex;
   flex-direction: column;
-  gap: 2rem;
 }
 
 .setting-item {
@@ -66,7 +168,7 @@ section {
   position: relative;
   display: inline-block;
   width: 50px;
-  height: 26px;
+  height: 24px;
 }
 
 .slider {
@@ -84,8 +186,8 @@ section {
 .slider::before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
+  height: 1rem;
+  width: 1rem;
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -105,32 +207,51 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1rem;
 }
 
 .section-head:hover {
   cursor: pointer;
 }
 
+.expand-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+}
+
+.expand-wrapper.is-expanded {
+  grid-template-rows: 1fr;
+}
+
 .text-items {
-  display: flex;
+  overflow: hidden;
 
   opacity: 1;
   transform: translateX(0);
-  transition-delay: 0.1s;
 }
 
-.content-toggle {
-  opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.3s ease 0.1s;
-  transition-delay: 0s;
-}
-
-.text-items-toggle {
-  display: none;
+.is-expanded .text-items {
+  transition:
+    opacity 0.3s ease 0.1s,
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .text-content {
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+
+  padding-left: 2rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+
+.switch-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>
