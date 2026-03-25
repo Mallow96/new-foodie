@@ -5,13 +5,17 @@ import { ref, onMounted, watch, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { useFoodStore } from "../store/foodie_store";
 import { useRouter } from "vue-router";
+import dayjs from "dayjs";
 
 const router = useRouter();
 const useStore = useFoodStore();
 const { myReservations } = storeToRefs(useStore);
+const today = dayjs();
+const thisResvYear = dayjs(myReservations.value[0].date).format("YYYY");
 
 const hasReservation = computed(() => myReservations.value.length > 0);
 // const reservationCount = ref(useStore.getReservationInfo.length);
+const currentTab = ref("upcoming");
 const noDataModal = ref(null);
 const cancelModal = ref(null);
 const editModal = ref(null);
@@ -32,6 +36,26 @@ const dayNames = [
 ];
 const reserveNote = ref("");
 const currentBookingId = ref("");
+
+const upcomingResv = computed(() => {
+  return myReservations.value.filter((resv) => dayjs(resv.date).isAfter(today));
+});
+
+const hasupcomingResv = computed(() => {
+  if (upcomingResv.value.length > 0) return true;
+  return false;
+});
+
+const pastResv = computed(() => {
+  return myReservations.value.filter((resv) =>
+    dayjs(resv.date).isBefore(today),
+  );
+});
+
+const hasPastResv = computed(() => {
+  if (pastResv.value.length > 0) return true;
+  return false;
+});
 
 watch(
   selectedDate,
@@ -68,6 +92,10 @@ onMounted(() => {
   }
 });
 
+const handleClickResvBtn = (tab) => {
+  currentTab.value = tab;
+};
+
 // 顯示無資料彈跳視窗
 const showNoDataModal = () => {
   noDataModal.value.show();
@@ -89,6 +117,8 @@ const onCancel = (bookingId) => {
     (res) => res.bookingId === bookingId,
   );
 };
+
+// const reservationsBeforeToday = myReservations.value.find((res)=>res.date === )
 
 const hideCancelModal = () => {
   cancelModal.value.hide();
@@ -158,50 +188,118 @@ const confirmEdit = () => {
     </aside>
 
     <main class="col-9">
-      <h2 class="mb-4">訂位紀錄</h2>
+      <h2>訂位紀錄</h2>
+
+      <div class="reservation-btns">
+        <button
+          class="reservation-switch"
+          :class="{ 'resv-btn-selected': currentTab === 'upcoming' }"
+          @click="handleClickResvBtn('upcoming')"
+        >
+          即將到來
+        </button>
+        <button
+          class="reservation-switch"
+          :class="{ 'resv-btn-selected': currentTab === 'history' }"
+          @click="handleClickResvBtn('history')"
+        >
+          歷史訂單
+        </button>
+      </div>
+
       <div v-if="!hasReservation" class="warning-text">
         <h3 class="no-reservation">查無訂位紀錄</h3>
       </div>
 
-      <div
-        class="reservation-card"
-        v-for="reservation in myReservations"
-        :key="reservation.bookingId"
-      >
-        <div class="reservation-img">
-          <img :src="reservation.restaurantImage" alt="餐廳圖片" />
-        </div>
+      <div v-if="currentTab === 'upcoming'">
+        <!-- <p>即將到來</p> -->
+        <div v-if="hasupcomingResv">
+          <div
+            class="reservation-card"
+            v-for="reservation in upcomingResv"
+            :key="reservation.bookingId"
+          >
+            <div class="reservation-img">
+              <img :src="reservation.restaurantImage" alt="餐廳圖片" />
+            </div>
 
-        <div class="reservation-content">
-          <div class="reservation-info">
-            <h3 class="reservation-subtitle">
-              {{ reservation.restaurantName }}
-            </h3>
-            <div class="reservation-details">
-              <div class="reservation-date">
-                <p class="card-text">{{ reservation.date }}</p>
-                <p>{{ reservation.time }}</p>
-                <p>{{ reservation.partySize }} 位</p>
+            <div class="reservation-content">
+              <div class="reservation-info">
+                <h3 class="reservation-subtitle">
+                  {{ reservation.restaurantName }}
+                </h3>
+                <div class="reservation-details">
+                  <div class="reservation-date">
+                    <p class="card-text">{{ reservation.date }}</p>
+                    <p>{{ reservation.time }}</p>
+                    <p>{{ reservation.partySize }} 位</p>
+                  </div>
+                  <p class="reservation-address">
+                    {{ reservation.address }}
+                  </p>
+                  <p class="reservation-phone">
+                    <i class="fa-solid fa-phone"></i>
+                    {{ reservation.restaurantPhone }}
+                  </p>
+                </div>
               </div>
-              <p class="reservation-address">
-                {{ reservation.address }}
-              </p>
-              <p class="reservation-phone">
-                <i class="fa-solid fa-phone"></i>
-                {{ reservation.restaurantPhone }}
-              </p>
+
+              <div class="reservation-actions">
+                <button
+                  class="cancel-btn"
+                  @click="onCancel(reservation.bookingId)"
+                >
+                  取消
+                </button>
+                <button class="edit-btn" @click="onEdit(reservation.bookingId)">
+                  修改
+                </button>
+              </div>
             </div>
           </div>
+        </div>
+        <div v-else>無即將到來</div>
+      </div>
+      <div v-else>
+        <div v-if="hasPastResv">
+          <!-- <p>歷史訂單</p> -->
+          <div
+            class="reservation-card"
+            v-for="reservation in pastResv"
+            :key="reservation.bookingId"
+          >
+            <div class="reservation-img">
+              <img :src="reservation.restaurantImage" alt="餐廳圖片" />
+            </div>
 
-          <div class="reservation-actions">
-            <button class="cancel-btn" @click="onCancel(reservation.bookingId)">
-              取消
-            </button>
-            <button class="edit-btn" @click="onEdit(reservation.bookingId)">
-              修改
-            </button>
+            <div class="reservation-content">
+              <div class="reservation-info">
+                <h3 class="reservation-subtitle">
+                  {{ reservation.restaurantName }}
+                </h3>
+                <div class="reservation-details">
+                  <div class="reservation-date">
+                    <p class="card-text">{{ reservation.date }}</p>
+                    <p>{{ reservation.time }}</p>
+                    <p>{{ reservation.partySize }} 位</p>
+                  </div>
+                  <p class="reservation-address">
+                    {{ reservation.address }}
+                  </p>
+                  <p class="reservation-phone">
+                    <i class="fa-solid fa-phone"></i>
+                    {{ reservation.restaurantPhone }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="reservation-actions">
+                <button class="edit-btn">歷史評價</button>
+              </div>
+            </div>
           </div>
         </div>
+        <div v-else>無歷史訂單</div>
       </div>
     </main>
   </div>
@@ -404,8 +502,18 @@ const confirmEdit = () => {
 </template>
 
 <style scoped>
+h2,
+p {
+  margin: 0;
+  padding: 0;
+}
+
 main {
   padding: 0 1rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .warning-text {
@@ -414,6 +522,24 @@ main {
   h3 {
     text-align: center;
   }
+}
+
+.reservation-btns {
+  display: flex;
+  gap: 1rem;
+}
+
+.reservation-switch {
+  padding: 0.25rem 0.75rem;
+  border-radius: 10rem;
+  border: 1px solid var(--color-primary-brown);
+  background-color: var(--color-primary-beige);
+  color: var(--color-primary-dbrown);
+}
+
+.reservation-switch.resv-btn-selected {
+  color: white;
+  background-color: var(--color-primary-brown);
 }
 
 .reservation-card {
@@ -491,9 +617,7 @@ main {
 
 .edit-btn,
 .cancel-btn {
-  width: 80px;
-  height: 40px;
-  padding: 0;
+  padding: 0.25rem 1rem;
   font-weight: 600;
   color: #f0e7d3;
   border: none;

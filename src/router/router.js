@@ -43,11 +43,14 @@ const routes = [
   }, // 動態路由
   {
     path: "/account-setting",
-    name: "accountSetting",
     component: AccountSetting,
     meta: { hideHeader: false, hideFooter: false },
     children: [
-      { path: "", redirect: { name: "SettingsAccount" } }, // 預設帳號設定
+      {
+        path: "",
+        redirect: { name: "SettingsAccount" },
+        name: "accountSetting",
+      }, // 預設帳號設定
       {
         path: "account",
         component: SettingsAccount,
