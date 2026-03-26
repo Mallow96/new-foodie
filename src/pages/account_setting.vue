@@ -74,12 +74,14 @@ onMounted(() => {
 
 <style scoped>
 main {
-  height: 43rem;
+  min-height: 43rem;
   padding: 0 1rem;
 }
 
 .settings-page {
   margin-bottom: 3rem;
+  position: relative;
+  z-index: 10;
 }
 
 .tabs {

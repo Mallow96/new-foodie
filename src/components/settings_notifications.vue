@@ -93,7 +93,7 @@ const toggleEmailExpand = () => {
       <h5>電子郵件通知</h5>
       <i
         :class="
-          isTextExpanded ? 'fa-solid fa-angle-up' : 'fa-solid fa-angle-down'
+          isEmailExpanded ? 'fa-solid fa-angle-up' : 'fa-solid fa-angle-down'
         "
       ></i>
     </div>

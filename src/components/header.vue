@@ -6,7 +6,7 @@ import Btn_Logo from "./btn_logo.vue";
   <div class="header">
     <Btn_Logo />
 
-    <div class="nav-group">
+    <nav class="nav-group">
       <div class="icons">
         <router-link :to="{ name: 'developing' }" class="unfinished clickables">
           <i class="fa-solid fa-bell"></i>
@@ -16,7 +16,7 @@ import Btn_Logo from "./btn_logo.vue";
           <i class="fa-solid fa-user"></i>
         </router-link>
       </div>
-    </div>
+    </nav>
   </div>
 </template>
 
@@ -29,6 +29,21 @@ import Btn_Logo from "./btn_logo.vue";
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
+  pointer-events: none;
+}
+
+.header * {
+  pointer-events: none;
+}
+
+.header .nav-group,
+.header .nav-group * {
+  pointer-events: auto;
+}
+
+.header .logo,
+.header .logo * {
+  pointer-events: auto;
 }
 
 .icons {

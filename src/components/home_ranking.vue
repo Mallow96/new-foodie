@@ -36,7 +36,7 @@ function scrollRanking(id, direction) {
 const randomIds = store.randomIdGenerator(10, 1001, 1300);
 const randomIds2 = store.randomIdGenerator(10, 1001, 1300);
 const randomIds3 = store.randomIdGenerator(10, 1001, 1300);
-console.log(randomIds, randomIds2, randomIds3);
+// console.log(randomIds, randomIds2, randomIds3);
 
 const restaurantsRanking1 = computed(() => {
   return randomIds.map((id) => store.getRestaurantInfo(id));

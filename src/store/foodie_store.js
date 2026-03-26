@@ -162,7 +162,7 @@ export const useFoodStore = defineStore(
       );
     };
 
-    // 將 reservations 裡每筆資料，結合對應餐廳的 imageUrl
+    // 將 reservations 裡每筆資料
     const myReservations = computed(() => {
       if (
         !reservations.value ||
@@ -176,13 +176,12 @@ export const useFoodStore = defineStore(
         (resv) => resv.userId === loggedInUser.value.userId,
       );
 
-      return reservations.value.map((resv) => {
+      return userReservations.map((resv) => {
         // 透過ID尋找餐廳物件
         const restaurant = getRestaurantInfo(resv.restaurantId);
 
         return {
           ...resv,
-          // 如果有找到，就加上 imageUrl，否則留空字串
           restaurantName: restaurant.name || "未知餐廳",
           restaurantAddress: restaurant.address || "無地址資訊",
           restaurantPhone: restaurant.contactPhone || "無電話資訊",
@@ -353,7 +352,16 @@ export const useFoodStore = defineStore(
 
     const changeUserName = (newName) => {
       currentUsername.value = newName;
-      window.location.reload();
+
+      const userExists = users.value.find((m) => m.username === newName);
+
+      if (userExists) {
+        loggedInUser.value = userExists;
+        console.log(`${newName} 成功登入`);
+      } else {
+        loggedInUser.value = null;
+        console.log(`找不到使用者: ${newName}`);
+      }
     };
 
     return {
