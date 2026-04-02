@@ -1,10 +1,19 @@
 <script setup>
 import BackBtn from "./back_btn.vue";
-
+import { useFoodStore } from "../store/foodie_store";
 import { ref } from "vue";
 
 const isExpanded = ref(true);
-const iconSwitch = ref(null);
+// const iconSwitch = ref(null);
+
+const store = useFoodStore();
+
+const props = defineProps({
+  restaurants: {
+    type: Array,
+    default: () => [],
+  },
+});
 
 const toggleAside = () => {
   isExpanded.value = !isExpanded.value;
@@ -25,7 +34,48 @@ const toggleAside = () => {
           <span>篩選</span>
         </button>
       </div>
-      <p>test</p>
+      <div v-if="!store.selectedRestaurant" class="res-list">
+        <p class="result-count">共 {{ props.restaurants.length }} 家餐廳</p>
+
+        <ol>
+          <li
+            v-for="res in props.restaurants"
+            :key="res.id"
+            class="list-card"
+            @click="store.setSelectedRestaurant(res)"
+          >
+            <img
+              v-if="res.image"
+              :src="res.image"
+              alt="餐廳圖片"
+              class="card-img"
+            />
+            <div class="card-info">
+              <h3 class="card-name">{{ res.name }}</h3>
+              <div class="card-data">
+                <p>{{ res.rating }} | {{ res.priceRange }}</p>
+                <p>{{ res.address }}</p>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div v-else class="detail-container">
+        <button @click="store.clearSelectedRestaurant()">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <img
+          :src="store.selectedRestaurant.image"
+          alt="餐廳圖片"
+          class="detail-res-image"
+        />
+        <div class="detail-body">
+          <h2 class="detail-name">{{ store.selectedRestaurant.name }}</h2>
+          <p>{{ store.selectedRestaurant.rating }}</p>
+          <p>{{ store.selectedRestaurant.address }}</p>
+        </div>
+      </div>
     </div>
 
     <button class="toggle-aside" @click="toggleAside()">

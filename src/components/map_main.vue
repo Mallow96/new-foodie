@@ -2,6 +2,9 @@
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { useFoodStore } from "../store/foodie_store";
+
+const store = useFoodStore();
 
 //預防圖標失效
 delete L.Icon.Default.prototype._getIconUrl;
@@ -52,13 +55,9 @@ const renderMarkers = (data) => {
     if (res.is_map_visible && res.lat && res.lng) {
       const marker = L.marker([res.lat, res.lng]);
 
-      // marker.bindPopup(`
-      // <div style="text-align: center; min-width: 150px;">
-      // <h4 style="margin: 0 0 5px 0; font-size: 16px;">${res.name}</h4>
-      // <p style="margin: 0; color: #666; font-size: 13px">${res.address}</p>
-      // </div>`);
-
       marker.on("click", () => {
+        store.setSelectedRestaurant(res);
+
         focusOnRestaurant(res.lat, res.lng);
       });
 
@@ -101,13 +100,29 @@ onMounted(() => {
   renderMarkers(props.restaurants);
 });
 
+//watch props
 watch(
   () => props.restaurants,
   (newRestaurants) => {
     console.log("--> watch 觸發了，收到新資料:", newRestaurants.length, "筆");
+
+    if (markerGroup) {
+      markerGroup.clearLayers();
+    }
     renderMarkers(newRestaurants);
   },
   { deep: true },
+);
+
+//watch store
+watch(
+  () => store.selectedRestaurant,
+  (newRestaurant) => {
+    if (newRestaurant && newRestaurant.lat && newRestaurant.lng) {
+      console.log(`--> 側邊點擊了 ${newRestaurant.name}，畫面轉移`);
+      focusOnRestaurant(newRestaurant.lat, newRestaurant.lng);
+    }
+  },
 );
 
 onUnmounted(() => {

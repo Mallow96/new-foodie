@@ -1,16 +1,23 @@
 <script setup>
 import Map_Main from "../components/map_main.vue";
 import Map_Aside from "../components/map_aside.vue";
+import { computed } from "vue";
 
 import { useFoodStore } from "../store/foodie_store";
 
 const store = useFoodStore();
+
+const mapVisibleRestaurants = computed(() => {
+  return store.restaurants.filter(
+    (res) => res.is_map_visible && res.lat && res.lng,
+  );
+});
 </script>
 
 <template>
   <div class="content">
-    <Map_Aside class="aside" :restaurants="store.restaurants" />
-    <Map_Main class="main" :restaurants="store.restaurants" />
+    <Map_Aside class="aside" :restaurants="mapVisibleRestaurants" />
+    <Map_Main class="main" :restaurants="mapVisibleRestaurants" />
   </div>
 </template>
 
