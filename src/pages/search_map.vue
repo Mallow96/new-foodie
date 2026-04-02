@@ -1,12 +1,16 @@
 <script setup>
 import Map_Main from "../components/map_main.vue";
 import Map_Aside from "../components/map_aside.vue";
+
+import { useFoodStore } from "../store/foodie_store";
+
+const store = useFoodStore();
 </script>
 
 <template>
   <div class="content">
-    <Map_Aside class="aside" />
-    <Map_Main class="main" />
+    <Map_Aside class="aside" :restaurants="store.restaurants" />
+    <Map_Main class="main" :restaurants="store.restaurants" />
   </div>
 </template>
 
