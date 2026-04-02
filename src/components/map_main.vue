@@ -25,6 +25,18 @@ const props = defineProps({
 let map;
 let markerGroup;
 
+//focus地標
+const focusOnRestaurant = (lat, lng) => {
+  if (!map) return;
+
+  const targetZoom = 16;
+  const currentZoom = map.getZoom() || 13;
+  const finalZoom = Math.max(currentZoom, targetZoom);
+
+  map.flyTo([lat, lng], finalZoom, { duration: 0.8 });
+};
+
+//圖釘
 const renderMarkers = (data) => {
   console.log("--> renderMarkers 收到的資料:", data);
 
@@ -40,11 +52,15 @@ const renderMarkers = (data) => {
     if (res.is_map_visible && res.lat && res.lng) {
       const marker = L.marker([res.lat, res.lng]);
 
-      marker.bindPopup(`
-      <div style="text-align: center; min-width: 150px;">
-      <h4 style="margin: 0 0 5px 0; font-size: 16px;">${res.name}</h4>
-      <p style="margin: 0; color: #666; font-size: 13px">${res.address}</p>  
-      </div>`);
+      // marker.bindPopup(`
+      // <div style="text-align: center; min-width: 150px;">
+      // <h4 style="margin: 0 0 5px 0; font-size: 16px;">${res.name}</h4>
+      // <p style="margin: 0; color: #666; font-size: 13px">${res.address}</p>
+      // </div>`);
+
+      marker.on("click", () => {
+        focusOnRestaurant(res.lat, res.lng);
+      });
 
       markerGroup.addLayer(marker);
       count++;
