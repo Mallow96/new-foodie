@@ -3,6 +3,8 @@ import BackBtn from "./back_btn.vue";
 import { useFoodStore } from "../store/foodie_store";
 import { ref } from "vue";
 
+import Stars from "./stars.vue";
+
 const isExpanded = ref(true);
 // const iconSwitch = ref(null);
 
@@ -34,9 +36,9 @@ const toggleAside = () => {
           <span>篩選</span>
         </button>
       </div>
+
       <div v-if="!store.selectedRestaurant" class="res-list">
         <p class="result-count">共 {{ props.restaurants.length }} 家餐廳</p>
-
         <ol>
           <li
             v-for="res in props.restaurants"
@@ -53,7 +55,10 @@ const toggleAside = () => {
             <div class="card-info">
               <h3 class="card-name">{{ res.name }}</h3>
               <div class="card-data">
-                <p>{{ res.rating }} | {{ res.priceRange }}</p>
+                <div>
+                  <Stars :rating="res.rating" :reviewCount="res.reviewCount" />
+                  | {{ res.priceRange }}
+                </div>
                 <p>{{ res.address }}</p>
               </div>
             </div>

@@ -1,6 +1,9 @@
 <script setup>
 import { computed } from "vue";
 import { useFoodStore } from "../store/foodie_store"; // 引入 store
+
+import Stars from "./stars.vue";
+
 const store = useFoodStore();
 
 function scrollRanking(id, direction) {
@@ -74,17 +77,9 @@ const restaurantsRanking3 = computed(() => {
               <div class="card-body">
                 <h5 class="card-title">{{ item.name }}</h5>
                 <p class="card-address">{{ item.address }}</p>
-                <div class="rating">
-                  <span class="rating-score">{{ item.rating }}</span>
-                  <div
-                    class="stars-outer"
-                    :style="{ '--rating': item.rating.toFixed(1) }"
-                  >
-                    ★★★★★
-                    <div class="stars-inner">★★★★★</div>
-                  </div>
-                  <span class="score-amount">({{ item.reviewCount }})</span>
-                </div>
+
+                <Stars :rating="item.rating" :reviewCount="item.reviewCount" />
+
                 <div class="">
                   <button class="arrow-btn">
                     <i class="fa-solid fa-arrow-right"></i>
@@ -117,17 +112,8 @@ const restaurantsRanking3 = computed(() => {
               <div class="card-body">
                 <h5 class="card-title">{{ item.name }}</h5>
                 <p class="card-address">{{ item.address }}</p>
-                <div class="rating">
-                  <span class="rating-score">{{ item.rating }}</span>
-                  <div
-                    class="stars-outer"
-                    :style="{ '--rating': item.rating.toFixed(1) }"
-                  >
-                    ★★★★★
-                    <div class="stars-inner">★★★★★</div>
-                  </div>
-                  <span class="score-amount">({{ item.reviewCount }})</span>
-                </div>
+                <Stars :rating="item.rating" :reviewCount="item.reviewCount" />
+
                 <div class="">
                   <button class="arrow-btn">
                     <i class="fa-solid fa-arrow-right"></i>
@@ -160,17 +146,8 @@ const restaurantsRanking3 = computed(() => {
               <div class="card-body">
                 <h5 class="card-title">{{ item.name }}</h5>
                 <p class="card-address">{{ item.address }}</p>
-                <div class="rating">
-                  <span class="rating-score">{{ item.rating }}</span>
-                  <div
-                    class="stars-outer"
-                    :style="{ '--rating': item.rating.toFixed(1) }"
-                  >
-                    ★★★★★
-                    <div class="stars-inner">★★★★★</div>
-                  </div>
-                  <span class="score-amount">({{ item.reviewCount }})</span>
-                </div>
+                <Stars :rating="item.rating" :reviewCount="item.reviewCount" />
+
                 <div class="">
                   <button class="arrow-btn">
                     <i class="fa-solid fa-arrow-right"></i>
@@ -287,28 +264,6 @@ section {
   margin-bottom: 4px;
 }
 
-.rating {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.rating-score {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-}
-
-.score-amount {
-  color: #966f53;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.stars {
-  color: #ffc107;
-}
-
 .arrow-btn {
   /* position: absolute; */
   /* bottom: 15px; */
@@ -371,40 +326,5 @@ section {
 
 .card-img-container {
   position: relative;
-}
-
-/* 1. 外層容器：顯示空心星 (作為背景) */
-.stars-outer {
-  /* 確保元素可以設定寬度，且不換行 */
-  display: inline-block;
-  position: relative;
-
-  /* 設置星星的字體大小和顏色 */
-  font-size: 24px; /* 調整這個值來改變星星的大小 */
-  color: lightgray; /* 空心星（背景）的顏色 */
-  line-height: 1; /* 防止星星因為行高被撐開 */
-  letter-spacing: 2px; /* 調整星星間距 */
-
-  /* 讓 CSS 變數 --rating 可以在這裡被使用 */
-  --rating: 0;
-}
-
-/* 2. 內層容器：顯示實心星 (作為前景覆蓋) */
-.stars-inner {
-  /* 絕對定位，讓它疊加在外層空心星上方 */
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  /* **關鍵技巧：只顯示指定寬度範圍內的內容** */
-  overflow: hidden;
-  white-space: nowrap; /* 確保星星不會換行 */
-
-  /* 實心星（前景）的顏色 */
-  color: var(--color-primary-yellow);
-
-  /* *** 魔法公式：根據分數計算寬度百分比 *** */
-  /* (評分 / 總分 5) * 100% = 實心星需要覆蓋的寬度 */
-  width: calc(var(--rating) / 5 * 100%);
 }
 </style>
