@@ -6,7 +6,9 @@ const props = defineProps({
     tyepe: [Number, String],
     default: 0,
     validator: (value) => {
-      !isNaN(Number(value)) && Number(value) >= 0 && Number(value) <= 5;
+      const num = Number(value);
+
+      return isNaN(num) || (num >= 0 && num <= 5);
     },
   },
   reviewCount: {
@@ -45,7 +47,7 @@ const formattedRating = computed(() => {
 }
 
 .rating-score {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: #333;
 }
@@ -63,7 +65,7 @@ const formattedRating = computed(() => {
   position: relative;
 
   /* 設置星星的字體大小和顏色 */
-  font-size: 24px; /* 調整這個值來改變星星的大小 */
+  font-size: 18px; /* 調整這個值來改變星星的大小 */
   color: lightgray; /* 空心星（背景）的顏色 */
   line-height: 1; /* 防止星星因為行高被撐開 */
   letter-spacing: 2px; /* 調整星星間距 */

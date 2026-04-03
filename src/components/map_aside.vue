@@ -86,7 +86,7 @@ const toggleAside = () => {
     </button>
 
     <div v-if="store.selectedRestaurant" class="detail-container">
-      <button @click="store.clearSelectedRestaurant()">
+      <button class="close-btn" @click="store.clearSelectedRestaurant()">
         <i class="fa-solid fa-close"></i>
       </button>
 
@@ -96,9 +96,22 @@ const toggleAside = () => {
         class="detail-res-image"
       />
       <div class="detail-body">
-        <h2 class="detail-name">{{ store.selectedRestaurant.name }}</h2>
-        <p>{{ store.selectedRestaurant.rating }}</p>
-        <p>{{ store.selectedRestaurant.address }}</p>
+        <routerLink
+          class="detail-title"
+          :to="`/restaurant/${store.selectedRestaurant.id}`"
+        >
+          <h2 class="detail-name">{{ store.selectedRestaurant.name }}</h2>
+          <i class="more-icon fa-solid fa-angle-right"></i>
+        </routerLink>
+        <div class="detail-subtitle">
+          <Stars
+            :rating="store.selectedRestaurant.rating"
+            :reviewCount="store.selectedRestaurant.reviewCount"
+          />
+          <p class="price-range">
+            TWD$ {{ store.selectedRestaurant.priceRange }} / 人
+          </p>
+        </div>
       </div>
     </div>
   </aside>
@@ -235,7 +248,7 @@ p {
 .list-card {
   display: flex;
   height: 12rem;
-  background-color: white;
+  background-color: var(--color-beige-300);
   border-radius: 0.5rem;
   overflow: hidden;
 }
@@ -269,7 +282,7 @@ p {
   background-color: var(--color-beige-50);
 }
 
-.detail-container button {
+.detail-container .close-btn {
   background-color: var(--color-beige-300);
   border: none;
   color: var(--color-dbrown-300);
@@ -282,5 +295,42 @@ p {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+}
+
+.detail-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-body .price-range {
+  font-size: 0.875rem;
+  color: var(--color-brown-300);
+}
+
+.detail-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+  color: var(--color-primary-dbrown);
+}
+
+.detail-title:hover {
+  .detail-name {
+    text-decoration: underline;
+  }
+}
+
+.detail-title .more-icon {
+  font-size: 1.5rem;
+}
+
+.detail-subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
