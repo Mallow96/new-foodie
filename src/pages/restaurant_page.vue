@@ -71,13 +71,25 @@ const restaurant = restStore.restaurants.find((r) => String(r.id) === id);
       <div class="col-8 pe-2">
         <!-- 切換tab -->
         <ul class="nav">
-          <li class="nav-item" @click="setActiveTab('info')">
+          <li
+            class="nav-item"
+            @click="setActiveTab('info')"
+            :class="{ active: activeTab === 'info' }"
+          >
             <div class="nav-link">資訊</div>
           </li>
-          <li class="nav-item" @click="setActiveTab('photo')">
+          <li
+            class="nav-item"
+            @click="setActiveTab('photo')"
+            :class="{ active: activeTab === 'photo' }"
+          >
             <div class="nav-link" href="#">照片</div>
           </li>
-          <li class="nav-item" @click="setActiveTab('review')">
+          <li
+            class="nav-item"
+            @click="setActiveTab('review')"
+            :class="{ active: activeTab === 'review' }"
+          >
             <div class="nav-link" href="#">評論</div>
           </li>
         </ul>
@@ -174,6 +186,8 @@ main {
   justify-content: center;
   border-bottom: 1px solid var(--color-brown-50);
 
+  transition: color 0.3s ease; /* 文字顏色的平滑漸變 */
+
   .nav-link {
     height: 3rem;
     display: flex;
@@ -184,6 +198,15 @@ main {
 
 .nav-item:hover {
   cursor: pointer;
+  background-color: var(--color-primary-beige);
+  border-bottom: 2px solid var(--color-primary-orange);
+
+  .nav-link {
+    color: var(--color-primary-dbrown);
+  }
+}
+
+.active {
   background-color: var(--color-primary-beige);
   border-bottom: 2px solid var(--color-primary-orange);
 

@@ -1,9 +1,16 @@
 <script setup>
 import BackBtn from "./back_btn.vue";
 import { useFoodStore } from "../store/foodie_store";
-import { ref } from "vue";
+import { defineAsyncComponent, ref } from "vue";
 
 import Stars from "./stars.vue";
+import Tabs from "./map-aside-tabs.vue";
+import AsideInfo from "./map-aside-info.vue";
+import AsidePhoto from "./map-aside-photo.vue";
+import AsideReviews from "./map-aside-reviews.vue";
+const AsideResv = defineAsyncComponent(
+  () => import("./reservation_calendar.vue"),
+);
 
 const isExpanded = ref(true);
 // const iconSwitch = ref(null);
@@ -20,12 +27,33 @@ const props = defineProps({
 const toggleAside = () => {
   isExpanded.value = !isExpanded.value;
 };
+
+const tabs = ref([
+  { name: "info", label: "資訊" },
+  { name: "photo", label: "照片" },
+  { name: "reviews", label: "評論" },
+  { name: "resv", label: "預訂" },
+]);
+
+const currentTab = ref("info");
+const handleTabChange = (tabName) => {
+  currentTab.value = tabName;
+  console.log("切換到tab:", tabName);
+};
+
+const componentMap = {
+  info: AsideInfo,
+  photo: AsidePhoto,
+  reviews: AsideReviews,
+  resv: AsideResv,
+};
 </script>
 
 <template>
   <aside :class="{ 'aside-expanded': isExpanded }" class="aside">
     <div class="scroll-container">
       <div :class="{ 'content-toggle': isExpanded }" class="aside-content">
+        <!-- 搜尋欄，aside上方固定 -->
         <div class="aside-row">
           <div class="row-wrapper">
             <BackBtn class="back-btn"></BackBtn>
@@ -44,8 +72,8 @@ const toggleAside = () => {
           </div>
         </div>
 
+        <!-- 餐廳列表 -->
         <div class="res-list">
-          <!-- <p class="result-count">共 {{ props.restaurants.length }} 家餐廳</p> -->
           <ol>
             <li
               v-for="res in props.restaurants"
@@ -73,6 +101,7 @@ const toggleAside = () => {
       </div>
     </div>
 
+    <!-- aside 隱藏/顯示 -->
     <button
       v-if="!store.selectedRestaurant"
       class="toggle-aside"
@@ -85,6 +114,7 @@ const toggleAside = () => {
       ></i>
     </button>
 
+    <!-- 顯示特定餐廳資訊 -->
     <div v-if="store.selectedRestaurant" class="detail-container">
       <button class="close-btn" @click="store.clearSelectedRestaurant()">
         <i class="fa-solid fa-close"></i>
@@ -96,6 +126,7 @@ const toggleAside = () => {
         class="detail-res-image"
       />
       <div class="detail-body">
+        <!-- 名稱 (餐廳頁面連結) -->
         <routerLink
           class="detail-title"
           :to="`/restaurant/${store.selectedRestaurant.id}`"
@@ -103,6 +134,8 @@ const toggleAside = () => {
           <h2 class="detail-name">{{ store.selectedRestaurant.name }}</h2>
           <i class="more-icon fa-solid fa-angle-right"></i>
         </routerLink>
+
+        <!-- 評論、價位 -->
         <div class="detail-subtitle">
           <Stars
             :rating="store.selectedRestaurant.rating"
@@ -112,6 +145,16 @@ const toggleAside = () => {
             TWD$ {{ store.selectedRestaurant.priceRange }} / 人
           </p>
         </div>
+
+        <!-- tab切換 -->
+        <div class="tabs">
+          <Tabs :tabs="tabs" @change="handleTabChange($event)" />
+        </div>
+
+        <!-- tab內容切換 -->
+        <KeepAlive>
+          <component :is="componentMap[currentTab]"></component>
+        </KeepAlive>
       </div>
     </div>
   </aside>
@@ -235,16 +278,6 @@ p {
   background-color: var(--color-beige-300);
 }
 
-.res-list ol {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 .list-card {
   display: flex;
   height: 12rem;
@@ -332,5 +365,9 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.tabs ol {
+  list-style: none;
 }
 </style>
