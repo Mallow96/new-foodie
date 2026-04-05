@@ -1,13 +1,9 @@
 <script setup>
-import { useRouter } from "vue-router";
-const router = useRouter();
-const goBack = () => {
-  router.back();
-};
+defineEmits(["click"]);
 </script>
 
 <template>
-  <button class="back-btn" @click="goBack">
+  <button class="back-btn" @click="$emit('click')">
     <i class="backBtn fa-solid fa-chevron-left"></i>
   </button>
 </template>

@@ -1,6 +1,6 @@
 <script setup>
 import Map_Main from "../components/map_main.vue";
-import Map_Aside from "../components/map_aside.vue";
+// import Map_Aside from "../components/map_aside.vue";
 import { computed } from "vue";
 
 import { useFoodStore } from "../store/foodie_store";
@@ -16,7 +16,8 @@ const mapVisibleRestaurants = computed(() => {
 
 <template>
   <div class="content">
-    <Map_Aside class="aside" :restaurants="mapVisibleRestaurants" />
+    <!-- <Map_Aside class="aside" :restaurants="mapVisibleRestaurants" /> -->
+    <router-view class="aside" :restaurants="mapVisibleRestaurants" />
     <Map_Main class="main" :restaurants="mapVisibleRestaurants" />
   </div>
 </template>

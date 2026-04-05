@@ -1,8 +1,9 @@
 <script setup>
-import BackBtn from "./back_btn.vue";
+import { ref, computed, watch, defineAsyncComponent } from "vue";
 import { useFoodStore } from "../store/foodie_store";
-import { defineAsyncComponent, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
+import BackBtn from "./back_btn.vue";
 import Stars from "./stars.vue";
 import Tabs from "./map-aside-tabs.vue";
 import AsideInfo from "./map-aside-info.vue";
@@ -12,10 +13,9 @@ const AsideResv = defineAsyncComponent(
   () => import("./reservation_calendar.vue"),
 );
 
-const isExpanded = ref(true);
-// const iconSwitch = ref(null);
-
 const store = useFoodStore();
+const route = useRoute();
+const router = useRouter();
 
 const props = defineProps({
   restaurants: {
@@ -24,6 +24,7 @@ const props = defineProps({
   },
 });
 
+const isExpanded = ref(true);
 const toggleAside = () => {
   isExpanded.value = !isExpanded.value;
 };
@@ -35,17 +36,59 @@ const tabs = ref([
   { name: "resv", label: "預訂" },
 ]);
 
-const currentTab = ref("info");
-const handleTabChange = (tabName) => {
-  currentTab.value = tabName;
-  console.log("切換到tab:", tabName);
-};
+const currentTab = computed(() => route.params.tab || "info");
 
 const componentMap = {
   info: AsideInfo,
   photo: AsidePhoto,
   reviews: AsideReviews,
-  // resv: AsideResv,
+  resv: AsideResv,
+};
+
+//根據 route 更新顯示的餐廳資訊
+const currentRestaurant = computed(() => {
+  const currentId = route.params.id;
+
+  if (!currentId) {
+    store.clearSelectedRestaurant();
+    return null;
+  }
+
+  const targetRes = store.getRestaurantInfo(Number(currentId) || currentId);
+  if (targetRes && targetRes.id) {
+    store.setSelectedRestaurant(targetRes);
+  }
+  return targetRes;
+});
+
+const closeDetail = () => {
+  store.clearSelectedRestaurant();
+  router.push({ name: "mapAsideDefault" });
+};
+
+const handleTabChange = (tabName) => {
+  router.replace({
+    name: "mapRestaurantDetail",
+    params: {
+      id: route.params.id,
+      tab: tabName,
+    },
+  });
+  console.log("切換到tab:", tabName);
+};
+
+const openRestaurantDetail = (res) => {
+  router.push({
+    name: "mapRestaurantDetail",
+    params: {
+      id: res.id,
+      tab: "info",
+    },
+  });
+};
+
+const handleBackBtn = () => {
+  router.push({ name: "test" });
 };
 </script>
 
@@ -56,7 +99,7 @@ const componentMap = {
         <!-- 搜尋欄，aside上方固定 -->
         <div class="aside-row">
           <div class="row-wrapper">
-            <BackBtn class="back-btn"></BackBtn>
+            <BackBtn class="back-btn" @click="handleBackBtn()"></BackBtn>
             <form action="" class="search-bar">
               <i class="fa-solid fa-magnifying-glass"></i>
               <input
@@ -79,7 +122,7 @@ const componentMap = {
               v-for="res in props.restaurants"
               :key="res.id"
               class="list-card"
-              @click="store.setSelectedRestaurant(res)"
+              @click="openRestaurantDetail(res)"
             >
               <img
                 v-if="res.image"
@@ -103,7 +146,7 @@ const componentMap = {
 
     <!-- aside 隱藏/顯示 -->
     <button
-      v-if="!store.selectedRestaurant"
+      v-if="!currentRestaurant"
       class="toggle-aside"
       @click="toggleAside()"
     >
@@ -115,13 +158,13 @@ const componentMap = {
     </button>
 
     <!-- 顯示特定餐廳資訊 -->
-    <div v-if="store.selectedRestaurant" class="detail-container">
-      <button class="close-btn" @click="store.clearSelectedRestaurant()">
+    <div v-if="currentRestaurant" class="detail-container">
+      <button class="close-btn" @click="closeDetail()">
         <i class="fa-solid fa-close"></i>
       </button>
 
       <img
-        :src="store.selectedRestaurant.image"
+        :src="currentRestaurant.image"
         alt="餐廳圖片"
         class="detail-res-image"
       />
@@ -129,20 +172,20 @@ const componentMap = {
         <!-- 名稱 (餐廳頁面連結) -->
         <routerLink
           class="detail-title"
-          :to="`/restaurant/${store.selectedRestaurant.id}`"
+          :to="`/restaurant/${currentRestaurant.id}`"
         >
-          <h2 class="detail-name">{{ store.selectedRestaurant.name }}</h2>
+          <h2 class="detail-name">{{ currentRestaurant.name }}</h2>
           <i class="more-icon fa-solid fa-angle-right"></i>
         </routerLink>
 
         <!-- 評論、價位 -->
         <div class="detail-subtitle">
           <Stars
-            :rating="store.selectedRestaurant.rating"
-            :reviewCount="store.selectedRestaurant.reviewCount"
+            :rating="currentRestaurant.rating"
+            :reviewCount="currentRestaurant.reviewCount"
           />
           <p class="price-range">
-            TWD$ {{ store.selectedRestaurant.priceRange }} / 人
+            TWD$ {{ currentRestaurant.priceRange }} / 人
           </p>
         </div>
 
@@ -152,9 +195,14 @@ const componentMap = {
         </div>
 
         <!-- tab內容切換 -->
-        <KeepAlive>
-          <component :is="componentMap[currentTab]"></component>
-        </KeepAlive>
+        <div class="tab-content">
+          <KeepAlive>
+            <component
+              :is="componentMap[currentTab]"
+              :key="route.fullPath"
+            ></component>
+          </KeepAlive>
+        </div>
       </div>
     </div>
   </aside>
@@ -332,6 +380,7 @@ p {
 
 .detail-body {
   padding: 1rem;
+  padding-bottom: 0;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -369,5 +418,14 @@ p {
 
 .tabs ol {
   list-style: none;
+}
+
+.tab-content {
+  max-height: 29.25rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  scrollbar-color: var(--color-orange-600) var(--color-beige-50);
+  scrollbar-width: thin;
 }
 </style>

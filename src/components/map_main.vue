@@ -2,9 +2,12 @@
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useFoodStore } from "../store/foodie_store";
+// import { useFoodStore } from "../store/foodie_store";
+import { useRouter, useRoute } from "vue-router";
 
-const store = useFoodStore();
+// const store = useFoodStore();
+const router = useRouter();
+const route = useRoute();
 
 //預防圖標失效
 delete L.Icon.Default.prototype._getIconUrl;
@@ -56,9 +59,16 @@ const renderMarkers = (data) => {
       const marker = L.marker([res.lat, res.lng]);
 
       marker.on("click", () => {
-        store.setSelectedRestaurant(res);
+        // store.setSelectedRestaurant(res);
+        // focusOnRestaurant(res.lat, res.lng);
 
-        focusOnRestaurant(res.lat, res.lng);
+        router.push({
+          name: "mapRestaurantDetail",
+          params: {
+            id: res.id,
+            tab: "info",
+          },
+        });
       });
 
       markerGroup.addLayer(marker);
@@ -115,14 +125,32 @@ watch(
 );
 
 //watch store
+// watch(
+//   () => store.selectedRestaurant,
+//   (newRestaurant) => {
+//     if (newRestaurant && newRestaurant.lat && newRestaurant.lng) {
+//       console.log(`--> 側邊點擊了 ${newRestaurant.name}，畫面轉移`);
+//       focusOnRestaurant(newRestaurant.lat, newRestaurant.lng);
+//     }
+//   },
+// );
+
+//watch route
 watch(
-  () => store.selectedRestaurant,
-  (newRestaurant) => {
-    if (newRestaurant && newRestaurant.lat && newRestaurant.lng) {
-      console.log(`--> 側邊點擊了 ${newRestaurant.name}，畫面轉移`);
-      focusOnRestaurant(newRestaurant.lat, newRestaurant.lng);
+  () => route.params.id,
+  (newId) => {
+    if (newId) {
+      const targetRes = props.restaurants.find(
+        (r) => String(r.id) === String(newId),
+      );
+
+      if (targetRes && targetRes.lat && targetRes.lng) {
+        console.log(`--> 網址切換到 ${targetRes.name}，畫面轉移`);
+        focusOnRestaurant(targetRes.lat, targetRes.lng);
+      }
     }
   },
+  { immediate: true },
 );
 
 onUnmounted(() => {

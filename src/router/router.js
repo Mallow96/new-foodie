@@ -3,6 +3,7 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from "vue-router";
+
 import Test from "../pages/home.vue";
 import Account from "../pages/account.vue";
 import RestaurantList from "../pages/fake_list.vue";
@@ -15,6 +16,7 @@ import ReservationHistory from "../pages/reservation_history.vue";
 import SearchResult from "../pages/search_result.vue";
 import PageUnfinish from "../pages/page_unfinish.vue";
 import Map from "../pages/search_map.vue";
+import MapAside from "../components/map_aside.vue";
 
 const routes = [
   {
@@ -94,6 +96,20 @@ const routes = [
     name: "map",
     component: Map,
     meta: { hideHeader: true, hideFooter: true },
+    children: [
+      {
+        path: "",
+        name: "mapAsideDefault",
+        component: MapAside,
+        props: true,
+      },
+      {
+        path: "restaurant/:id/:tab?",
+        name: "mapRestaurantDetail",
+        component: MapAside,
+        props: true,
+      },
+    ],
   },
 ];
 

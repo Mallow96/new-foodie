@@ -2,30 +2,14 @@
 import BackBtn from "../components/back_btn.vue";
 import accountAside from "../components/account_aside.vue";
 
-import { computed, onMounted } from "vue";
-import { useFoodStore } from "../store/foodie_store";
+import { onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
-const useStore = useFoodStore();
 
-// 透過 Getter 取得登入使用者的乾淨資料
-const userInfo = computed(() => useStore.getLoggedInUserBasicInfo);
-const currentTab = computed(() => route.meta.tab || "account");
-
-// 格式化日期時間的函式
-const formatDateTime = (isoString) => {
-  if (!isoString) return "N/A";
-  const date = new Date(isoString);
-  return date.toLocaleString("zh-TW", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+const handleBackBtn = () => {
+  router.push({ name: "account" });
 };
 
 onMounted(() => {
@@ -37,7 +21,7 @@ onMounted(() => {
 
 <template>
   <div class="back">
-    <BackBtn></BackBtn>
+    <BackBtn @click="handleBackBtn()"></BackBtn>
   </div>
 
   <div class="row settings-page">
@@ -50,18 +34,21 @@ onMounted(() => {
           to="/account-setting/account"
           class="tab account-tab"
           :class="{ active: $route.meta.tab === 'account' }"
+          replace
           >帳號設定</router-link
         >
         <router-link
           to="/account-setting/privacy"
           class="tab privacy-tab"
           :class="{ active: $route.meta.tab === 'privacy' }"
+          replace
           >隱私設定</router-link
         >
         <router-link
           to="/account-setting/notifications"
           class="tab notifications-tab"
           :class="{ active: $route.meta.tab === 'notifications' }"
+          replace
           >通知設定</router-link
         >
       </div>

@@ -1,10 +1,12 @@
 <script setup>
 import BackBtn from "../components/back_btn.vue";
 
-import { computed, ref } from "vue";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
 import { useFoodStore } from "../store/foodie_store";
 
 const useStore = useFoodStore();
+const router = useRouter();
 
 // 透過 Getter 取得登入使用者的乾淨資料
 const userInfo = computed(() => useStore.getLoggedInUserBasicInfo);
@@ -22,10 +24,16 @@ const formatDateTime = (isoString) => {
     // second: "2-digit",
   });
 };
+
+const handleBackBtn = () => {
+  router.push({ name: "test" });
+};
 </script>
 
 <template>
-  <div class="back"><BackBtn></BackBtn></div>
+  <div class="back">
+    <BackBtn @click="handleBackBtn()"></BackBtn>
+  </div>
   <main class="content w-100">
     <div class="user-info w-100 d-flex align-items-center">
       <span class="profile"></span>

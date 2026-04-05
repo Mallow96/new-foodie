@@ -1,9 +1,22 @@
 <script setup>
+import { useRouter } from "vue-router";
 import BackBtn from "../components/back_btn.vue";
+
+const router = useRouter();
+
+const handleBackBtn = () => {
+  if (window.history.state.back) {
+    router.back();
+  } else {
+    router.push({ name: "test" });
+  }
+};
 </script>
 
 <template>
-  <div class="back"><BackBtn></BackBtn></div>
+  <div class="back">
+    <BackBtn @click="handleBackBtn()"></BackBtn>
+  </div>
   <section>
     <h1>正在建置中</h1>
     <p>此功能尚未完成，敬請期待更多內容上線！</p>

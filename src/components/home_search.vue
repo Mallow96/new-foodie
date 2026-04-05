@@ -150,7 +150,7 @@ watch(isExpanded, async (newVal) => {
 
       <!-- 地圖鈕 -->
       <router-link
-        :to="{ name: 'map' }"
+        :to="{ name: 'mapAsideDefault' }"
         class="map-block search-bar-blocks clickables"
       >
         <span>前往地圖</span>

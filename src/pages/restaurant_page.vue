@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useFoodStore } from "../store/foodie_store";
 import restaurantInfo from "../components/restaurant-info.vue";
 import reservationCalendar from "../components/reservation_calendar.vue";
+import BackBtn from "../components/back_btn.vue";
 
+const router = useRouter();
 const route = useRoute();
 const restStore = useFoodStore();
 const id = route.params.id;
@@ -16,9 +18,21 @@ const setActiveTab = (tabName) => {
 
 // 假設 restaurants 中每筆物件有唯一屬性 id
 const restaurant = restStore.restaurants.find((r) => String(r.id) === id);
+
+const handleBackBtn = () => {
+  if (window.history.state && window.history.state.back) {
+    router.back();
+  } else {
+    router.push({ name: "test" });
+  }
+};
 </script>
 
 <template>
+  <div class="back">
+    <BackBtn @click="handleBackBtn()"></BackBtn>
+  </div>
+
   <main v-if="restaurant">
     <div class="banner">
       <img :src="restaurant.image" :alt="restaurant.name" />

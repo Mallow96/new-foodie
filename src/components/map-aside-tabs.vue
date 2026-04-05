@@ -1,5 +1,8 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 const props = defineProps({
   tabs: {
@@ -12,11 +15,15 @@ const emit = defineEmits({
   change: (tabName) => typeof tabName === "string" && tabName.length > 0,
 });
 
-const activeIndex = ref(0);
+const activeIndex = computed(() => {
+  const currentTab = route.params.tab || "info";
+  const index = props.tabs.findIndex((t) => t.name === currentTab);
+  return index !== -1 ? index : 0;
+});
 
 //aside切換tab
-const switchTab = (index, tabName) => {
-  activeIndex.value = index;
+const switchTab = (tabName) => {
+  // activeIndex.value = index;
   emit("change", tabName);
 };
 </script>
@@ -36,10 +43,7 @@ const switchTab = (index, tabName) => {
       :key="tab.name"
       class="tab-btn"
       :class="{ 'is-active': activeIndex === index }"
-      @click="
-        activeIndex = index;
-        switchTab(index, tab.name);
-      "
+      @click="switchTab(tab.name)"
     >
       {{ tab.label }}
     </li>

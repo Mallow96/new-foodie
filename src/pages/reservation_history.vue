@@ -1,5 +1,6 @@
 <script setup>
 import accountAside from "../components/account_aside.vue";
+import BackBtn from "../components/back_btn.vue";
 
 import { ref, onMounted, watch, computed } from "vue";
 import { storeToRefs } from "pinia";
@@ -178,10 +179,16 @@ const confirmEdit = () => {
   }
 };
 
-// 用 JS 強制把遮罩掛在 body 下
+const handleBackBtn = () => {
+  router.push({ name: "account" });
+};
 </script>
 
 <template>
+  <div class="back">
+    <BackBtn @click="handleBackBtn()"></BackBtn>
+  </div>
+
   <div class="row">
     <aside class="col-3">
       <accountAside></accountAside>
