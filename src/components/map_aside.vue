@@ -61,6 +61,16 @@ const currentRestaurant = computed(() => {
   return targetRes;
 });
 
+watch(
+  () => route.params.id,
+  (newId) => {
+    if (newId) {
+      isExpanded.value = true;
+    }
+  },
+  { immediate: true },
+);
+
 const closeDetail = () => {
   store.clearSelectedRestaurant();
   router.push({ name: "mapAsideDefault" });
