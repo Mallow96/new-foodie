@@ -30,6 +30,8 @@ const props = defineProps({
 
 let map;
 let markerGroup;
+const mapContainer = ref(null);
+let resizeObserver = null;
 
 //focus地標
 const focusOnRestaurant = (lat, lng) => {
@@ -80,7 +82,7 @@ const renderMarkers = (data) => {
 };
 
 onMounted(() => {
-  map = L.map("map", {
+  map = L.map(mapContainer.value, {
     center: [25.033, 121.5654], //center on Taipei
     zoom: 13,
     zoomControl: false,
@@ -108,6 +110,16 @@ onMounted(() => {
 
   //5. render
   renderMarkers(props.restaurants);
+
+  resizeObserver = new ResizeObserver(() => {
+    if (map) {
+      map.invalidateSize();
+    }
+  });
+
+  if (mapContainer.value) {
+    resizeObserver.observe(mapContainer.value);
+  }
 });
 
 //watch props
@@ -157,6 +169,10 @@ onUnmounted(() => {
   if (map) {
     map.remove();
   }
+
+  if (resizeObserver) {
+    resizeObserver.disconnect();
+  }
 });
 </script>
 
@@ -164,7 +180,7 @@ onUnmounted(() => {
   <main>
     <!-- <h2>this is map main</h2> -->
     <div class="map-wrapper">
-      <div class="map" id="map"></div>
+      <div class="map" id="map" ref="mapContainer"></div>
     </div>
   </main>
 </template>
