@@ -45,7 +45,7 @@ const componentMap = {
   info: AsideInfo,
   photo: AsidePhoto,
   reviews: AsideReviews,
-  resv: AsideResv,
+  // resv: AsideResv,
 };
 </script>
 
