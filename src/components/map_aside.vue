@@ -121,7 +121,7 @@ const handleBackBtn = () => {
             <li
               v-for="res in props.restaurants"
               :key="res.id"
-              class="list-card"
+              class="list-card clickables"
               @click="openRestaurantDetail(res)"
             >
               <img
@@ -233,7 +233,7 @@ p {
 }
 
 .aside-expanded {
-  width: 30rem;
+  min-width: 30rem;
 }
 
 .toggle-aside {
@@ -253,13 +253,12 @@ p {
 }
 
 .aside-content {
-  padding: 0 1rem;
+  padding-left: 1rem;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
 
   opacity: 0;
   transform: translateX(-20px);
@@ -278,6 +277,7 @@ p {
   position: sticky;
 
   padding: 1rem 0;
+  padding-right: 0.5rem;
   top: 0rem;
   background-color: var(--color-beige-50);
   z-index: 10;
@@ -323,7 +323,18 @@ p {
 }
 
 .advance-search:hover {
-  background-color: var(--color-beige-300);
+  background-color: var(--color-primary-beige);
+}
+
+.res-list {
+  width: 100%;
+}
+
+.res-list ol {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .list-card {
@@ -332,6 +343,11 @@ p {
   background-color: var(--color-beige-300);
   border-radius: 0.5rem;
   overflow: hidden;
+  cursor: pointer;
+}
+
+.list-card:hover {
+  background-color: var(--color-primary-beige);
 }
 
 .card-img {
@@ -414,10 +430,6 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.tabs ol {
-  list-style: none;
 }
 
 .tab-content {
