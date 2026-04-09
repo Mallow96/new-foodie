@@ -2,9 +2,9 @@
 
 <template>
   <div class="logo">
-    <a href="/">
+    <router-link to="/">
       <img src="../assets/logo.svg" alt="logo" class="logo-img" />
-    </a>
+    </router-link>
   </div>
 </template>
 
