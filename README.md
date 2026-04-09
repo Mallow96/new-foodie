@@ -21,10 +21,11 @@
 
 **前端框架與建構工具：**
 
-- [Vue 3](https://vuejs.org/) 框架
+- [Vue 3](https://vuejs.org/) 框架 + 純 JavaScript
 - [Vite](https://vitejs.dev/) 專案結構
 - [Vue Router](https://router.vuejs.org/) 路由管理及頁面切換
 - [Pinia](https://pinia.vuejs.org/) 狀態管理
+- [Axios](https://axios-http.com/) 資料請求
 
 **UI 與地圖套件：**
 
