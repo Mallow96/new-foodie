@@ -115,7 +115,7 @@ const routes = [
 
 const router = createRouter({
   routes,
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       // 瀏覽器前進/後退，回復到上次的滾動位置
