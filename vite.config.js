@@ -4,7 +4,7 @@ import vue from "@vitejs/plugin-vue";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: "/new-foodie/", // 把 <repo-name> 換成你的專案名稱
+  base: process.env.NODE_ENV === "production" ? "/new-foodie/" : "/",
   server: {
     proxy: {
       "/api": {
