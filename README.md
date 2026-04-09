@@ -2,6 +2,9 @@
 
 > 使用 Vue 3 和 Leaflet 地圖製作的全面美食探索平台
 > 🔗 **[Live Demo 線上預覽](https://mallow96.github.io/new-foodie/#/)**
+>
+> [![Changelog](https://img.shields.io/badge/Changelog-View_Here-blue.svg)](./CHANGELOG.md)
+
 
 ## 專案簡介
 
