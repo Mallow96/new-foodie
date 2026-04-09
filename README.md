@@ -1,49 +1,71 @@
-# Foodie
+# 找點吃 - 4 Foodies
 
-本專案基於 **Vue 3** ，採用現代前端技術，後端為Node.js，資料庫使用firebase；實現了從產品瀏覽、全域狀態管理到訂單處理的完整美食電商流程。
+> 使用 Vue 3 和 Leaflet 地圖製作的全面美食探索平台
+> 🔗 **[Live Demo 線上預覽](https://mallow96.github.io/new-foodie/#/)**
 
----
+## 專案簡介
 
-## 專案核心特色
+本專案旨在設計並打造一個一站式、功能全面的美食探索平台，功能包括：
 
-- **Vue 3 框架**：利用最新版的 Composition API 與 Script Setup 語法，構建高效且易於維護的組件。
-- **全域狀態管理 (Pinia)**：
-  - 使用 `foodie_store.js` 集中管理前端資料。
-- **動態路由導航**：使用 **Vue Router 4** 實現流暢的頁面切換與動態參數路由。
-- **時間格式優化**：利用 **Day.js** 處理訂單時間與日期顯示。
-- **響應式介面設計**：採用部分 **Bootstrap 5** 佈局，完美適配手機、平板與桌上型電腦。
-- **後端環境**：
-  - 後端使用**Node.js**，佈署至Railway ，並同步資料至Firebase資料庫。
-  - 前端透過 **Axios** 非同步讀取後端API。
-  - 具備 `members` (會員)、`restaurants` (餐廳) 及 `reservations` (預訂) 資料結構。
+1. 尋找及比較餐廳
+2. 線上候位或訂位
+3. 評論及分享
+4. 餐廳活動及優惠券
 
----
+### 主要功能
 
-## 技術表
+- **文字與地圖搜尋**：使用者可透過關鍵字或使用地圖尋找心儀的餐廳。
+- **動態預訂系統**：操作預訂系統，當日可現場候位，前日則可提前預訂。會員中心則有管理目前訂單和瀏覽歷史紀錄的功能。
 
-| 技術分類     | 工具名稱       | 版本 / 說明              |
-| :----------- | :------------- | :----------------------- |
-| **核心框架** | **Vue.js 3**   | 進階響應式框架           |
-| **建構工具** | **Vite**       | 次世代快速開發工具       |
-| **狀態管理** | **Pinia**      | 全域狀態管理             |
-| **路由管理** | **Vue Router** | 單頁應用路由導航         |
-| **資料請求** | **Axios**      | 處理 JSON 資料非同步讀取 |
-| **UI 框架**  | **Bootstrap**  | 響應式 UI 與 Bootstrap   |
-| **工具庫**   | **Day.js**     | 輕量化時間處理           |
+## 核心技術
 
----
+**前端框架與建構工具：**
 
-## 專案目錄結構
+- [Vue 3](https://vuejs.org/) 框架
+- [Vite](https://vitejs.dev/) 專案結構
+- [Vue Router](https://router.vuejs.org/) 路由管理及頁面切換
+- [Pinia](https://pinia.vuejs.org/) 狀態管理
+
+**UI 與地圖套件：**
+
+- [Leaflet.js](https://leafletjs.com/) 地圖引擎
+- [Bootstrap 5](https://getbootstrap.com/) UI 框架
+- [Day.js](https://day.js.org/) 日期處理
+- 原生 CSS 及變數管理
+
+**後端及資料庫：**
+
+- Node.js / Express
+- Railway App 後端 API 託管
+- Firebase 資料庫
+
+**部署：**
+
+- GitHub Actions CI/CD 自動化部署
+- GitHub Pages 前端託管
+
+## 目錄結構
 
 ```text
-project foodie/
-├── public/
-├── src/
-│   ├── assets/            # 靜態資源 (圖片、SVG)
-│   ├── components/        # 可複用 UI 組件
-│   ├── pages/             # 頁面級組件 (Home, Menu, Order...)
-│   ├── router/            # Vue Router 路由配置 (router.js)
-│   └── store/             # Pinia 狀態管理 (foodie_store.js)
-├── package.json           # 專案依賴與腳本
-└── vite.config.js         # Vite 環境設定
+src/
+ ├─ assets/        # 靜態資源 (圖片、全域 CSS)
+ ├─ components/    # UI 組件 (BackBtn, Stars, Tabs...)
+ ├─ pages/         # 頁面級組件 (SearchMap, Home...)
+ ├─ router/        # Vue Router 路由設定 (包含巢狀路由)
+ ├─ store/         # Pinia 狀態管理 (API 請求、全域狀態)
+ └─ main.js        # Vue 實體進入點
 ```
+
+<!-- ## 系統架構亮點
+
+### 1. 以 URL 為單一真相來源 (URL as State)
+
+[簡述你如何使用 Vue Router 取代傳統的狀態變數，讓側邊欄與地圖完美同步。]
+
+### 2. 效能優化 (Performance Optimization)
+
+[簡述你如何使用 `defineAsyncComponent` 延遲載入龐大的日曆組件，以及使用 `computed` 取代不必要的 `watch`。]
+
+### 3. 動態組件與狀態保留
+
+[簡述你如何使用 `<KeepAlive>` 搭配 `:key="route.fullPath"` 來解決表單切換時的狀態遺失與混淆問題。] -->
