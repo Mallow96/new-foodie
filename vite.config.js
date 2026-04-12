@@ -18,7 +18,7 @@ export default defineConfig(({ command, mode }) => {
     server: {
       proxy: {
         "/api": {
-          target: "https://202603foodie-node-api-production.up.railway.app",
+          target: "https://foodie-node-api.vercel.app",
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
