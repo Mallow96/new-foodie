@@ -87,6 +87,8 @@ function onNewSearch() {
       <button @click="$router.push('/')">回到首頁</button>
     </div>
 
+    <div v-if="store.isSearching" class="text-center py-4">搜尋中...</div>
+
     <div v-else class="results-list">
       <div v-for="item in store.results" :key="item.id" class="restaurant-card">
         <router-link :to="`/restaurant/${item.id}`" class="card-body row">

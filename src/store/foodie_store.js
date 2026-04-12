@@ -20,6 +20,7 @@ export const useFoodStore = defineStore(
     const currentUsername = ref("user1");
 
     const isLoading = ref(false);
+    const isSearching = ref(false);
     const dataError = ref(null);
 
     const selectedRestaurant = ref(null);
@@ -307,21 +308,43 @@ export const useFoodStore = defineStore(
     };
 
     const results = ref([]);
-    const search = (keyword) => {
-      const kw = keyword.trim().toLowerCase();
+    // 用前端實作search功能
+    // const search = (keyword) => {
+    //   const kw = keyword.trim().toLowerCase();
+    //   if (!kw) {
+    //     results.value = [];
+    //     return;
+    //   }
+    //   results.value = restaurants.value.filter((item) => {
+    //     const nameMatch = item.name.toLowerCase().includes(kw);
+    //     const addressMatch = item.address.toLowerCase().includes(kw);
+    //     const dishesMatch =
+    //       Array.isArray(item.signatureDishes) &&
+    //       item.signatureDishes.some((dish) => dish.toLowerCase().includes(kw));
+
+    //     return nameMatch || addressMatch || dishesMatch;
+    //   });
+    // };
+    // 打API實作search功能
+    const search = async (keyword) => {
+      const kw = keyword.trim();
       if (!kw) {
         results.value = [];
         return;
       }
-      results.value = restaurants.value.filter((item) => {
-        const nameMatch = item.name.toLowerCase().includes(kw);
-        const addressMatch = item.address.toLowerCase().includes(kw);
-        const dishesMatch =
-          Array.isArray(item.signatureDishes) &&
-          item.signatureDishes.some((dish) => dish.toLowerCase().includes(kw));
 
-        return nameMatch || addressMatch || dishesMatch;
-      });
+      isSearching.value = true; // 開始
+      try {
+        const res = await axios.get(`${API_URL}/restaurants`, {
+          params: { keyword: kw },
+        });
+        results.value = res.data;
+      } catch (err) {
+        console.error("搜尋失敗:", err);
+        results.value = [];
+      } finally {
+        isSearching.value = false; // 結束
+      }
     };
 
     const directUnfinished = () => {
@@ -383,6 +406,7 @@ export const useFoodStore = defineStore(
       loggedInUser,
       getLoggedInUserBasicInfo,
       isLoading,
+      isSearching,
       dataError,
       hasLoadedMembers,
       results,
